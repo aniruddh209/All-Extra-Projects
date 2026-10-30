@@ -1,0 +1,204 @@
+@model List<MOM_PROJECT.Models.MeetingMemberModel>
+
+@{
+    ViewData["Title"] = "Meeting Members";
+    Layout = "_Layout";
+}
+
+<style>
+/* ── Page Header ─────────────────────────────────── */
+.page-title    { font-size: 26px; font-weight: 700; color: #1e1b4b; }
+.page-subtitle { color: #6b7280; font-size: 14px; }
+
+/* ── Ghost add-member button ─────────────────────── */
+.btn-add-member {
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.btn-add-member:hover { background: rgba(255,255,255,0.30); color: #fff; }
+
+/* ── Table wrap ──────────────────────────────────── */
+.mom-table-wrap {
+  background: transparent;
+  padding: 0;
+}
+
+/* ── Staff chip (avatar + name) ──────────────────── */
+.staff-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.staff-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+}
+.staff-name { font-weight: 600; color: #374151; }
+
+/* ── Dept tag ────────────────────────────────────── */
+.dept-tag {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px; font-weight: 600;
+}
+
+/* ── Present/Absent badges ───────────────────────── */
+.badge-present {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+}
+.badge-absent {
+  background: #fff5f5;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+}
+
+/* ── Action buttons ──────────────────────────────── */
+.action-group { display: inline-flex; gap: 6px; }
+
+/* ── Empty state ─────────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 50px 20px; color: #94a3b8;
+}
+.empty-state i { font-size: 48px; display: block; margin-bottom: 12px; opacity: 0.4; }
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <div class="page-title">👥 Meeting Members</div>
+      <div class="page-subtitle">Manage attendance and members for this meeting</div>
+    </div>
+    <a asp-action="MeetingList" asp-controller="Meeting"
+       class="btn btn-outline-secondary rounded-pill px-4"
+       style="font-size:13px; font-weight:600;">
+      ← Back to Meetings
+    </a>
+  </div>
+
+  <!-- Main Card -->
+  <div class="mom-card">
+
+    <!-- Card Header -->
+    <div class="mom-card-header">
+      <h5>👤 Members List</h5>
+      <a asp-action="MeetingMemberAddEdit"
+         asp-route-meetingId="@ViewBag.MeetingID"
+         class="btn-add-member">
+        + Add Member
+      </a>
+    </div>
+
+    <!-- Table -->
+    <div class="mom-table-wrap">
+      @if (Model != null && Model.Count > 0)
+      {
+        <table class="mom-table">
+          <thead>
+            <tr>
+              <th>Staff Member</th>
+              <th>Department</th>
+              <th class="text-center">Status</th>
+              <th>Remarks</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var m in Model)
+            {
+              <tr>
+
+                <!-- Staff with avatar chip -->
+                <td>
+                  <div class="staff-chip">
+                    <div class="staff-avatar">
+                      @(string.IsNullOrWhiteSpace(m.StaffName) ? "?" : m.StaffName.Substring(0,1).ToUpper())
+                    </div>
+                    <span class="staff-name">@m.StaffName</span>
+                  </div>
+                </td>
+
+                <!-- Department -->
+                <td>
+                  <span class="dept-tag">@m.DepartmentName</span>
+                </td>
+
+                <!-- Attendance Status -->
+                <td class="text-center">
+                  @if (m.IsPresent == true)
+                  {
+                    <span class="badge-present">✓ Present</span>
+                  }
+                  else
+                  {
+                    <span class="badge-absent">✗ Absent</span>
+                  }
+                </td>
+
+                <!-- Remarks -->
+                <td>
+                  <span class="text-muted" style="font-size:13px;">
+                    @(string.IsNullOrWhiteSpace(m.Remarks) ? "—" : m.Remarks)
+                  </span>
+                </td>
+
+                <!-- Actions -->
+                <td class="text-center">
+                  <div class="action-group">
+                    <a asp-action="MeetingMemberAddEdit"
+                       asp-route-id="@m.MeetingMemberID"
+                       asp-route-meetingId="@ViewBag.MeetingID"
+                       class="btn-edit-row">
+                      ✏ Edit
+                    </a>
+                    <a asp-action="DeleteMeetingMember"
+                       asp-route-id="@m.MeetingMemberID"
+                       asp-route-meetingId="@ViewBag.MeetingID"
+                       class="btn-delete-row"
+                       onclick="return confirm('Remove this member?');">
+                      🗑 Delete
+                    </a>
+                  </div>
+                </td>
+
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      else
+      {
+        <div class="empty-state">
+          <i class="bi bi-people"></i>
+          No members added yet. Click <strong>+ Add Member</strong> to get started.
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

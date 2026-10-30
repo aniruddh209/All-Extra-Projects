@@ -1,0 +1,123 @@
+/**
+ * GSTBilling PRO — Master Design Tokens & Variables
+ * Strict implementation of Phase 1 Master Design System
+ */
+
+:root,
+[data-theme="dark"],
+.dark {
+  /* Surface & Layout Colors (High-Contrast Premium Dark Theme) */
+  --background: #0B0D14;
+  --surface-main: #0F121C;
+  --surface: #151824;
+  --surface-elevated: #1A1E2D;
+  --surface-hover: #1E2335;
+  --sidebar: #0F121C;
+  --topbar: #0F121C;
+
+  /* Border Tokens (Dark Theme) */
+  --border: #262B3F;
+  --border-strong: #333A54;
+
+  /* Typography Colors (Dark Theme) */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-disabled: #475569;
+
+  /* Brand & Accent Tokens */
+  --primary: #6366F1;
+  --primary-hover: #4F46E5;
+
+  /* Semantic Feedback Tokens */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #3B82F6;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"],
+.light {
+  /* Surface & Layout Colors (Light Theme - Exact Specification) */
+  --background: #F7F8FA;
+  --surface-main: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-elevated: #FAFAFB;
+  --surface-hover: #F4F5F7;
+  --sidebar: #FFFFFF;
+  --topbar: #FFFFFF;
+
+  /* Border Tokens (Light Theme) */
+  --border: #E4E7EC;
+  --border-strong: #D0D5DD;
+
+  /* Typography Colors (Light Theme) */
+  --text-primary: #18181B;
+  --text-secondary: #52525B;
+  --text-muted: #71717A;
+  --text-disabled: #A1A1AA;
+
+  /* Brand & Accent Tokens */
+  --primary: #6366F1;
+  --primary-hover: #4F46E5;
+
+  /* Semantic Feedback Tokens */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #3B82F6;
+
+  /* Shadows (Subtle, Clean) */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+:root {
+  /* Master 8px Spacing System */
+  --spacing-1: 4px;   /* Micro spacing */
+  --spacing-2: 8px;   /* Icon / Text gap */
+  --spacing-3: 12px;  /* Compact spacing */
+  --spacing-4: 16px;  /* Normal component spacing */
+  --spacing-5: 20px;  /* Form / Card padding */
+  --spacing-6: 24px;  /* Standard section gap */
+  --spacing-8: 32px;  /* Major section gap */
+  --spacing-10: 40px; /* Page section separation */
+  --spacing-12: 48px; /* Large separation */
+  --spacing-14: 56px; /* Extra large separation */
+  --spacing-16: 64px; /* Major visual separation */
+  --spacing-20: 80px; /* Hero section separation */
+  --spacing-24: 96px; /* Exceptional hero spacing */
+
+  /* Radius Tokens */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+
+  /* Z-Index Hierarchy (Strict & Controlled) */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-sidebar: 20;
+  --z-topbar: 30;
+  --z-dropdown: 40;
+  --z-popover: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+
+  /* Typography Tokens */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}

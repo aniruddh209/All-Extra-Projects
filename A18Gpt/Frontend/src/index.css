@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+@theme{
+  --color-primary:#E6CCFF;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+.reset-tw :not(pre):not(code){
+  all: revert;
+}
+•loader div:nth-child(2){ 
+  animation-delay: 0.2s;
+}
+•loader div:nth-child(3){ 
+  animation-delay: 0.4s
+}

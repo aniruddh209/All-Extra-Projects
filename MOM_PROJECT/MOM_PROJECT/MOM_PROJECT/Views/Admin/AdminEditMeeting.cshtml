@@ -1,0 +1,117 @@
+@model MOM_PROJECT.Models.AdminEditMeetingModel
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    ViewBag.Title = "Edit Meeting";
+    int? returnUserId = ViewBag.ReturnUserID as int?;
+}
+<div class="pagetitle mb-3">
+  <h1><i class="bi bi-calendar-event me-2" style="color:var(--adm-primary);"></i>Edit Meeting</h1>
+  <nav><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-action="AdminDashboard">Dashboard</a></li>
+    @if (returnUserId.HasValue)
+    {
+      <li class="breadcrumb-item"><a asp-action="UserDetail" asp-route-id="@returnUserId.Value">User</a></li>
+    }
+    <li class="breadcrumb-item"><a asp-action="AllMeetings">Meetings</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+  </ol></nav>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card border-0 shadow-sm" style="border-radius:16px;">
+      <div class="card-header border-0" style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px 16px 0 0;padding:1rem 1.4rem;">
+        <h6 class="mb-0 text-white fw-bold"><i class="bi bi-calendar-event me-2"></i>Meeting Details</h6>
+      </div>
+      <div class="card-body p-4">
+        <form asp-action="AdminEditMeeting" method="post">
+          @Html.AntiForgeryToken()
+          <input asp-for="MeetingID" type="hidden" />
+          @if (returnUserId.HasValue)
+          {
+            <input type="hidden" name="userId" value="@returnUserId.Value" />
+          }
+
+          <div class="mb-3">
+            <label asp-for="MeetingDate" class="form-label fw-semibold">Meeting Date & Time</label>
+            <input asp-for="MeetingDate" type="datetime-local" class="form-control"
+                   value="@Model.MeetingDate?.ToString("yyyy-MM-ddTHH:mm")" />
+            <span asp-validation-for="MeetingDate" class="text-danger small"></span>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <label asp-for="MeetingVenueID" class="form-label fw-semibold">Venue</label>
+              <select asp-for="MeetingVenueID" asp-items="Model.MeetingVenueList" class="form-select">
+                <option value="">-- Select --</option>
+              </select>
+              <span asp-validation-for="MeetingVenueID" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+              <label asp-for="MeetingTypeID" class="form-label fw-semibold">Type</label>
+              <select asp-for="MeetingTypeID" asp-items="Model.MeetingTypeList" class="form-select">
+                <option value="">-- Select --</option>
+              </select>
+              <span asp-validation-for="MeetingTypeID" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+              <label asp-for="DepartmentID" class="form-label fw-semibold">Department</label>
+              <select asp-for="DepartmentID" asp-items="Model.DepartmentList" class="form-select">
+                <option value="">-- Select --</option>
+              </select>
+              <span asp-validation-for="DepartmentID" class="text-danger small"></span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label asp-for="MeetingDescription" class="form-label fw-semibold">Description</label>
+            <textarea asp-for="MeetingDescription" class="form-control" rows="3" placeholder="Meeting description…"></textarea>
+            <span asp-validation-for="MeetingDescription" class="text-danger small"></span>
+          </div>
+
+          <div class="mb-3">
+            <label asp-for="DocumentPath" class="form-label fw-semibold">Document Path / URL</label>
+            <input asp-for="DocumentPath" class="form-control" placeholder="Optional document path…" />
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check form-switch">
+              <input asp-for="IsCancelled" class="form-check-input" type="checkbox" id="isCancelledCheck"
+                     onchange="toggleCancelReason(this)" />
+              <label class="form-check-label fw-semibold" for="isCancelledCheck">Mark as Cancelled</label>
+            </div>
+          </div>
+
+          <div class="mb-4" id="cancelReasonBox" style="display:@(Model.IsCancelled ? "block" : "none")">
+            <label asp-for="CancellationReason" class="form-label fw-semibold">Cancellation Reason</label>
+            <textarea asp-for="CancellationReason" class="form-control" rows="2" placeholder="Reason for cancellation…"></textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn fw-bold px-4"
+                    style="background:linear-gradient(135deg,var(--adm-primary),var(--adm-accent));color:#fff;border:none;border-radius:10px;box-shadow:0 4px 14px rgba(14,165,233,.25);font-family:'Inter',sans-serif;">
+              <i class="bi bi-save me-1"></i>Update Meeting
+            </button>
+            @if (returnUserId.HasValue)
+            {
+              <a asp-action="UserDetail" asp-route-id="@returnUserId.Value" asp-route-tab="meetings" class="btn btn-outline-secondary" style="border-radius:8px;">
+                <i class="bi bi-x me-1"></i>Cancel
+              </a>
+            }
+            else
+            {
+              <a asp-action="AllMeetings" class="btn btn-outline-secondary" style="border-radius:8px;">
+                <i class="bi bi-x me-1"></i>Cancel
+              </a>
+            }
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleCancelReason(chk) {
+  document.getElementById('cancelReasonBox').style.display = chk.checked ? 'block' : 'none';
+}
+</script>

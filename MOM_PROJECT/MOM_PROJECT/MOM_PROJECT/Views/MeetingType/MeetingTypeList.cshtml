@@ -1,0 +1,115 @@
+@model List<MOM_PROJECT.Models.MeetingTypeModel>
+
+@{
+    ViewData["Title"] = "Meeting Type List";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <div class="mom-page-title">🏷 Meeting Types</div>
+      <div class="mom-page-subtitle">Manage categories and classifications for meetings</div>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  @if (TempData["SuccessMessage"] != null)
+  {
+    <div class="mom-alert-success mb-3">✅ @TempData["SuccessMessage"]</div>
+  }
+  @if (TempData["ErrorMessage"] != null)
+  {
+    <div class="mom-alert-danger mb-3">⚠️ @TempData["ErrorMessage"]</div>
+  }
+
+  <!-- Search Form -->
+  <form method="post" asp-action="MeetingTypeList" asp-controller="MeetingType" class="mb-3">
+    <div class="mom-card" style="border-radius:14px;">
+      <div class="mom-card-body" style="padding:16px 24px;">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-5">
+            <label class="mom-label" style="margin-bottom:6px;">🔍 Search by Meeting Type</label>
+            <input type="text" name="SearchText" class="form-control mom-control"
+                   placeholder="Enter meeting type name..." value="@ViewBag.SearchText" />
+          </div>
+          <div class="col-md-4 d-flex gap-2">
+            <button type="submit" class="mom-btn-save" style="padding:10px 24px;">
+              🔍 Search
+            </button>
+            <a asp-action="MeetingTypeList" asp-controller="MeetingType"
+               class="btn btn-outline-secondary mom-btn-back" style="padding:10px 20px;">
+              ↻ Reset
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Main Card -->
+  <div class="mom-card">
+    <div class="mom-card-header">
+      <h5>🏷 All Meeting Types</h5>
+      <a asp-action="MeetingTypeAddEdit" asp-controller="MeetingType" class="mom-btn-ghost">
+        + Add Meeting Type
+      </a>
+    </div>
+
+    <div class="mom-card-body">
+      <table class="mom-table datatable">
+        <thead>
+          <tr>
+            <th>Meeting Type Name</th>
+            <th>Remarks</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (Model != null && Model.Count > 0)
+          {
+            foreach (var item in Model)
+            {
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="mom-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706);">🏷</div>
+                    <span style="font-weight:600;color:#1e1b4b;">@item.MeetingTypeName</span>
+                  </div>
+                </td>
+                <td style="font-size:13px;color:#6b7280;">
+                  @(string.IsNullOrEmpty(item.Remarks) ? "—" : item.Remarks)
+                </td>
+                <td class="text-center">
+                  <div class="d-inline-flex gap-2">
+                    <a asp-action="MeetingTypeAddEdit" asp-controller="MeetingType"
+                       asp-route-id="@item.MeetingTypeID" class="mom-btn-edit">✏ Edit</a>
+                    <a asp-action="DeleteMeetingType" asp-controller="MeetingType"
+                       asp-route-id="@item.MeetingTypeID" class="mom-btn-delete"
+                       onclick="return confirm('Delete this meeting type?');">🗑 Delete</a>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+          else
+          {
+            <tr>
+              <td colspan="3" class="text-center text-muted py-5">
+                <i class="bi bi-tags fs-1 d-block mb-2 opacity-25"></i>
+                No meeting types found
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+<script>new simpleDatatables.DataTable(".datatable");</script>

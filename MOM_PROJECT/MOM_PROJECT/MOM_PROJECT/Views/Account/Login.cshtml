@@ -1,0 +1,428 @@
+@model MOM_PROJECT.Models.UserModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOM System | Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  animation: fadeIn 0.4s ease;
+}
+@@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Left panel — brand accent */
+.login-left {
+  flex: 1;
+  padding: 56px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.5s ease;
+}
+.login-left.member-mode {
+  background: linear-gradient(145deg, #6366f1, #818cf8, #a78bfa);
+}
+.login-left.admin-mode {
+  background: linear-gradient(145deg, #1e1b4b, #4c1d95, #7c3aed);
+}
+
+.brand-logo {
+  width: 60px; height: 60px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  margin-bottom: 28px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  transition: all 0.3s;
+}
+.login-left h1 { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+.login-left p  { font-size: 14px; opacity: 0.8; line-height: 1.6; }
+.feature-list  { margin-top: 32px; }
+.feature-item  {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; margin-bottom: 14px; opacity: 0.9;
+}
+.feature-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  flex-shrink: 0;
+}
+
+/* Right panel — form */
+.login-right {
+  flex: 1;
+  background: #fff;
+  padding: 56px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.login-right h2 { font-size: 22px; font-weight: 800; color: #1f2937; margin-bottom: 6px; }
+.login-right .sub { font-size: 14px; color: #9ca3af; margin-bottom: 28px; }
+
+/* ── Role Toggle ── */
+.role-toggle-container {
+  display: flex;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+  position: relative;
+}
+.role-toggle-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  color: #6b7280;
+  position: relative;
+  z-index: 1;
+}
+.role-toggle-btn.active-member {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.30);
+}
+.role-toggle-btn.active-admin {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(124,58,237,0.40);
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+  margin-bottom: 7px;
+}
+.input-wrap { position: relative; }
+.input-icon {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); font-size: 15px; color: #d1d5db;
+  pointer-events: none;
+}
+.form-group input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  background: #fff;
+  color: #374151;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129,140,248,0.15);
+}
+.form-group input.admin-focus:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.15);
+}
+
+.row-options {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px; font-size: 13px;
+}
+.row-options label { display: flex; align-items: center; gap: 6px; color: #6b7280; cursor: pointer; }
+
+.btn-signin {
+  width: 100%;
+  padding: 14px;
+  border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700;
+  color: #fff; font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, background 0.3s;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.30);
+}
+.btn-signin.member-btn {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+}
+.btn-signin.admin-btn {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  box-shadow: 0 4px 14px rgba(124,58,237,0.40);
+}
+.btn-signin:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.signup-link {
+  margin-top: 24px; text-align: center;
+  font-size: 14px; color: #9ca3af;
+}
+.signup-link a { color: #6366f1; font-weight: 700; text-decoration: none; }
+
+/* Error message styling */
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* field-level validation */
+.field-validation-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Admin info hint */
+.admin-hint {
+  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(236,72,153,0.08));
+  border: 1px solid rgba(124,58,237,0.15);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #7c3aed;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideDown 0.3s ease;
+}
+@@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@@media (max-width: 640px) {
+  .login-wrapper { flex-direction: column; }
+  .login-left { padding: 36px; }
+  .login-right { padding: 36px; }
+}
+</style>
+</head>
+<body>
+
+<div class="login-wrapper">
+
+  <!-- Left brand panel -->
+  <div class="login-left member-mode" id="leftPanel">
+    <div class="brand-logo" id="brandLogo">📋</div>
+    <h1 id="brandTitle">Meeting & MOM Management</h1>
+    <p id="brandDesc">Organise, track and manage all your meetings in one place.</p>
+    <div class="feature-list" id="featureList">
+      <div class="feature-item"><div class="feature-dot"></div> Manage meetings & attendees</div>
+      <div class="feature-item"><div class="feature-dot"></div> Track attendance & reports</div>
+      <div class="feature-item"><div class="feature-dot"></div> Department & staff management</div>
+      <div class="feature-item"><div class="feature-dot"></div> Export to Excel in one click</div>
+    </div>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="login-right">
+    <h2 id="formTitle">Welcome back 👋</h2>
+    <p class="sub" id="formSubtitle">Sign in to your MOM System account</p>
+
+    @* ── Role Toggle ── *@
+    <div class="role-toggle-container">
+      <button type="button" class="role-toggle-btn active-member" id="btnMember" onclick="switchRole('member')">
+        <i class="bi bi-person-fill"></i> Member Login
+      </button>
+      <button type="button" class="role-toggle-btn" id="btnAdmin" onclick="switchRole('admin')">
+        <i class="bi bi-shield-fill-check"></i> Admin Login
+      </button>
+    </div>
+
+    @* ── Show error if login failed ── *@
+    @if (ViewData.ModelState.ContainsKey(string.Empty) && ViewData.ModelState[string.Empty]!.Errors.Count > 0)
+    {
+      <div class="error-box">
+        ⚠️ @ViewData.ModelState[string.Empty]!.Errors[0].ErrorMessage
+      </div>
+    }
+
+    <form id="loginForm" method="post">
+      @Html.AntiForgeryToken()
+      <input type="hidden" name="LoginRole" id="loginRoleInput" value="Member" />
+
+      <div id="adminHint" style="display:none;">
+        <div class="admin-hint">
+          <i class="bi bi-info-circle-fill"></i>
+          Sign in with administrator credentials to access the Admin Panel.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input type="text" asp-for="Username" placeholder="Enter your username" autocomplete="username" id="usernameInput" />
+        </div>
+        <span asp-validation-for="Username" class="field-validation-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" asp-for="Password" placeholder="Enter your password" autocomplete="current-password" id="passwordInput" />
+        </div>
+        <span asp-validation-for="Password" class="field-validation-error"></span>
+      </div>
+
+      <div class="row-options">
+        <label><input type="checkbox"> Remember me</label>
+      </div>
+
+      <button type="submit" class="btn-signin member-btn" id="submitBtn">
+        <span id="submitText">Sign In →</span>
+      </button>
+
+    </form>
+
+    <div class="signup-link" id="signupArea">
+      Don't have an account? <a href="@Url.Action("Register","Account")">Create one →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var currentRole = 'member';
+
+// Check if we came back with an admin error (from a failed admin login attempt)
+@if (ViewData.ContainsKey("LoginRole") && ViewData["LoginRole"]?.ToString() == "Admin")
+{
+  <text>
+  document.addEventListener('DOMContentLoaded', function() { switchRole('admin'); });
+  </text>
+}
+
+function switchRole(role) {
+  currentRole = role;
+  var leftPanel   = document.getElementById('leftPanel');
+  var brandLogo   = document.getElementById('brandLogo');
+  var brandTitle  = document.getElementById('brandTitle');
+  var brandDesc   = document.getElementById('brandDesc');
+  var featureList = document.getElementById('featureList');
+  var formTitle   = document.getElementById('formTitle');
+  var formSub     = document.getElementById('formSubtitle');
+  var btnMember   = document.getElementById('btnMember');
+  var btnAdmin    = document.getElementById('btnAdmin');
+  var submitBtn   = document.getElementById('submitBtn');
+  var submitText  = document.getElementById('submitText');
+  var adminHint   = document.getElementById('adminHint');
+  var signupArea  = document.getElementById('signupArea');
+  var loginForm   = document.getElementById('loginForm');
+  var roleInput   = document.getElementById('loginRoleInput');
+  var usernameInp = document.getElementById('usernameInput');
+  var passwordInp = document.getElementById('passwordInput');
+
+  if (role === 'admin') {
+    // Switch to Admin mode
+    leftPanel.className = 'login-left admin-mode';
+    brandLogo.innerHTML = '🛡️';
+    brandTitle.textContent = 'Admin Control Panel';
+    brandDesc.textContent = 'Full control over users, meetings, and all system data.';
+    featureList.innerHTML =
+      '<div class="feature-item"><div class="feature-dot"></div> Manage all registered users</div>' +
+      '<div class="feature-item"><div class="feature-dot"></div> View & edit user-specific data</div>' +
+      '<div class="feature-item"><div class="feature-dot"></div> Cascade delete users & data</div>' +
+      '<div class="feature-item"><div class="feature-dot"></div> Full system overview</div>';
+
+    formTitle.textContent = 'Admin Portal 🛡️';
+    formSub.textContent = 'Sign in with administrator credentials';
+
+    btnMember.className = 'role-toggle-btn';
+    btnAdmin.className  = 'role-toggle-btn active-admin';
+
+    submitBtn.className = 'btn-signin admin-btn';
+    submitText.textContent = 'Sign In as Admin →';
+
+    adminHint.style.display = 'block';
+    signupArea.style.display = 'none';
+
+    loginForm.action = '@Url.Action("AdminLogin", "Admin")';
+    roleInput.value  = 'Admin';
+
+    usernameInp.classList.add('admin-focus');
+    passwordInp.classList.add('admin-focus');
+  } else {
+    // Switch to Member mode
+    leftPanel.className = 'login-left member-mode';
+    brandLogo.innerHTML = '📋';
+    brandTitle.textContent = 'Meeting & MOM Management';
+    brandDesc.textContent = 'Organise, track and manage all your meetings in one place.';
+    featureList.innerHTML =
+      '<div class="feature-item"><div class="feature-dot"></div> Manage meetings & attendees</div>' +
+      '<div class="feature-item"><div class="feature-dot"></div> Track attendance & reports</div>' +
+      '<div class="feature-item"><div class="feature-dot"></div> Department & staff management</div>' +
+      '<div class="feature-item"><div class="feature-dot"></div> Export to Excel in one click</div>';
+
+    formTitle.textContent = 'Welcome back 👋';
+    formSub.textContent = 'Sign in to your MOM System account';
+
+    btnMember.className = 'role-toggle-btn active-member';
+    btnAdmin.className  = 'role-toggle-btn';
+
+    submitBtn.className = 'btn-signin member-btn';
+    submitText.textContent = 'Sign In →';
+
+    adminHint.style.display = 'none';
+    signupArea.style.display = 'block';
+
+    loginForm.action = '@Url.Action("Login", "Account")';
+    roleInput.value  = 'Member';
+
+    usernameInp.classList.remove('admin-focus');
+    passwordInp.classList.remove('admin-focus');
+  }
+}
+</script>
+
+</body>
+</html>

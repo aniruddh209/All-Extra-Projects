@@ -1,0 +1,53 @@
+@model MOM_PROJECT.Models.MeetingVenueModel
+
+@{
+    ViewData["Title"] = Model.MeetingVenueID == 0 ? "Add Meeting Venue" : "Edit Meeting Venue";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="mom-page-title">
+      @(Model.MeetingVenueID == 0 ? "Add Meeting Venue" : "Edit Meeting Venue")
+    </div>
+    <div class="mom-page-subtitle">Add or update a venue for meetings</div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="mom-card" style="max-width:700px; margin:auto;">
+    <div class="mom-card-header">
+      <h5>Venue Details</h5>
+    </div>
+
+    <div class="mom-card-body">
+      <form asp-controller="MeetingVenue" asp-action="MeetingVenueAddEdit" method="post">
+
+        <input type="hidden" asp-for="MeetingVenueID" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-4">
+          <label class="mom-label">Meeting Venue Name <span class="text-danger">*</span></label>
+          <input asp-for="MeetingVenueName" class="form-control mom-control"
+                 placeholder="e.g. Conference Room A, Virtual – Zoom" />
+          <span asp-validation-for="MeetingVenueName" class="text-danger small"></span>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <a asp-action="MeetingVenueList"
+             class="btn btn-outline-secondary mom-btn-back">← Back</a>
+          <button type="submit" class="mom-btn-save">
+            ✔ @(Model.MeetingVenueID == 0 ? "Save Venue" : "Update Venue")
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>

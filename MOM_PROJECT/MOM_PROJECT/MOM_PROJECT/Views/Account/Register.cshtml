@@ -1,0 +1,289 @@
+@model MOM_PROJECT.Models.RegisterModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account | MOM System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.reg-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 940px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  animation: fadeIn 0.4s ease;
+}
+@@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Left panel — brand accent */
+.reg-left {
+  width: 340px;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #6366f1, #818cf8, #a78bfa);
+  padding: 48px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+}
+.brand-logo {
+  width: 56px; height: 56px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+}
+.reg-left h1 { font-size: 24px; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+.reg-left p  { font-size: 14px; opacity: 0.8; line-height: 1.6; }
+
+.feature-list  { margin-top: 28px; }
+.feature-item  {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; margin-bottom: 12px; opacity: 0.9;
+}
+.feature-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  flex-shrink: 0;
+}
+
+.testimonial {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+.testimonial p {
+  font-size: 13px;
+  font-style: italic;
+  opacity: 0.85;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.testimonial .author {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+/* Right panel — form */
+.reg-right {
+  flex: 1;
+  background: #fff;
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.reg-right h2 { font-size: 22px; font-weight: 800; color: #1f2937; margin-bottom: 4px; }
+.reg-right .sub { font-size: 14px; color: #9ca3af; margin-bottom: 28px; }
+
+.section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: #818cf8;
+  margin: 0 0 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(to right, #e5e7ff, transparent);
+}
+
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+}
+.form-group { display: flex; flex-direction: column; }
+.form-group.full { grid-column: 1 / -1; }
+
+.form-group label {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #6b7280; margin-bottom: 6px;
+}
+
+.input-wrap { position: relative; }
+.input-icon {
+  position: absolute; left: 13px; top: 50%;
+  transform: translateY(-50%); font-size: 14px; color: #d1d5db;
+  pointer-events: none;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 14px; font-family: "Inter", sans-serif;
+  background: #fff; color: #374151;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129,140,248,0.12);
+}
+select { padding-left: 40px; appearance: auto; }
+small {
+  display: block; margin-top: 4px;
+  font-size: 11px; color: #9ca3af;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 14px; border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700; color: #fff;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.28);
+  margin-top: 8px;
+}
+.btn-register:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.login-link {
+  text-align: center; margin-top: 20px;
+  font-size: 14px; color: #9ca3af;
+}
+.login-link a { color: #6366f1; font-weight: 700; text-decoration: none; }
+
+/* Error message */
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Field validation */
+.field-validation-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+@@media (max-width: 700px) {
+  .reg-wrapper { flex-direction: column; }
+  .reg-left { width: 100%; padding: 32px 28px; }
+  .reg-right { padding: 32px 28px; }
+  .form-row { grid-template-columns: 1fr; }
+  .testimonial { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="reg-wrapper">
+
+  <!-- Left brand panel -->
+  <div class="reg-left">
+    <div class="brand-logo">📋</div>
+    <h1>Join MOM System</h1>
+    <p>Create your account and start managing meetings efficiently.</p>
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-dot"></div> Organize meetings & agendas</div>
+      <div class="feature-item"><div class="feature-dot"></div> Track attendance & reports</div>
+      <div class="feature-item"><div class="feature-dot"></div> Department & staff management</div>
+      <div class="feature-item"><div class="feature-dot"></div> Export reports to Excel</div>
+    </div>
+    <div class="testimonial">
+      <p>"MOM System has transformed how our team organizes and tracks meetings. Highly recommended!"</p>
+      <div class="author">— MOM IT Solutions</div>
+    </div>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="reg-right">
+    <h2>Create Account ✨</h2>
+    <p class="sub">Fill in the details below to get started</p>
+
+    @if (ViewData.ModelState.ContainsKey(string.Empty) && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+    {
+      <div class="error-box">
+        ⚠️ @ViewData.ModelState[string.Empty]?.Errors[0].ErrorMessage
+      </div>
+    }
+
+    <form asp-controller="Account" asp-action="Register" method="post">
+      @Html.AntiForgeryToken()
+
+      <div class="section-label">Account Information</div>
+
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" asp-for="Username" placeholder="Choose a username" autocomplete="username" />
+          </div>
+          <span asp-validation-for="Username" class="field-validation-error"></span>
+          <small>3–50 characters required</small>
+        </div>
+      </div>
+      <input type="hidden" asp-for="Role" value="Member" />
+
+      <div class="section-label">Security</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" asp-for="Password" placeholder="Create a password" autocomplete="new-password" />
+          </div>
+          <span asp-validation-for="Password" class="field-validation-error"></span>
+          <small>Minimum 6 characters</small>
+        </div>
+
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" asp-for="ConfirmPassword" placeholder="Repeat password" autocomplete="new-password" />
+          </div>
+          <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-register">Create Account →</button>
+
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="@Url.Action("Login","Account")">Sign in →</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+@model MOM_PROJECT.Models.DepartmentModel
+
+@{
+    ViewData["Title"] = "Department Details";
+    Layout = "_Layout";
+    var staffList = ViewBag.StaffList as List<MOM_PROJECT.Models.StaffModel> ?? new List<MOM_PROJECT.Models.StaffModel>();
+}
+
+<style>
+  .dv-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #f1f5f9;
+  }
+  .dv-card-header {
+    padding: 14px 22px;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    letter-spacing: 0.3px;
+  }
+  .dv-card-body { padding: 22px; }
+
+  .dv-hdr-info   { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+  .dv-hdr-stats  { background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%); }
+  .dv-hdr-staff  { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); }
+  .dv-hdr-action { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+
+  .dv-label {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .dv-val {
+    font-size: 14px;
+    color: #1e1b4b;
+    font-weight: 600;
+  }
+
+  /* Logo */
+  .dv-logo {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    border: 3px solid #e5e7eb;
+  }
+  .dv-logo-ph {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.25);
+  }
+
+  /* Name badge */
+  .dv-name-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  /* Info Row */
+  .dv-info-row {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+
+  /* Stats */
+  .dv-stat {
+    text-align: center;
+    padding: 18px 10px;
+    background: #f8fafc;
+    border-radius: 12px;
+  }
+  .dv-stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .dv-stat-lbl {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* Staff list */
+  .dv-staff {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .dv-staff:last-child { border-bottom: none; }
+  .dv-staff-avatar {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .dv-staff-name { font-weight: 700; color: #1e1b4b; font-size: 13px; }
+  .dv-staff-role { font-size: 11px; color: #6366f1; font-weight: 600; }
+  .dv-staff-email { font-size: 11px; color: #94a3b8; }
+
+  /* Action buttons */
+  .dv-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    width: 100%;
+  }
+  .dv-action:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  /* Header action pills */
+  .dv-hdr-pill {
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .dv-hdr-pill:hover { opacity: 0.85; }
+
+  /* Breadcrumb */
+  .dv-breadcrumb {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+  }
+  .dv-breadcrumb a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .dv-breadcrumb a:hover { text-decoration: underline; }
+
+  /* Dark theme */
+  body[data-theme="dark"] .dv-card { background: #1e293b; border-color: #334155; }
+  body[data-theme="dark"] .dv-val { color: #e2e8f0; }
+  body[data-theme="dark"] .dv-staff-name { color: #e2e8f0; }
+  body[data-theme="dark"] .dv-staff-email { color: #64748b; }
+  body[data-theme="dark"] .dv-stat-num { filter: brightness(1.2); }
+  body[data-theme="dark"] .dv-staff { border-bottom-color: #334155; }
+  body[data-theme="dark"] .dv-info-row { background: #0f172a; }
+  body[data-theme="dark"] .dv-stat { background: #0f172a; }
+  body[data-theme="dark"] .dv-breadcrumb span { color: #e2e8f0; }
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Breadcrumb -->
+  <div class="dv-breadcrumb">
+    <a asp-action="Index" asp-controller="Home">🏠 Dashboard</a>
+    <span class="mx-1">/</span>
+    <a asp-action="DepartmentList" asp-controller="Department">Departments</a>
+    <span class="mx-1">/</span>
+    <span style="color:#1e1b4b; font-weight:600;">@Model.DepartmentName</span>
+  </div>
+
+  <div class="row">
+
+    <!-- ════════ LEFT COLUMN (8 cols) ════════ -->
+    <div class="col-lg-8">
+
+      <!-- Department Information -->
+      <div class="dv-card">
+        <div class="dv-card-header dv-hdr-info">
+          <span>🏢</span>
+          <span>Department Information</span>
+          <div class="ms-auto d-flex gap-2">
+            <a asp-action="DepartmentAddEdit" asp-controller="Department"
+               asp-route-id="@Model.DepartmentID"
+               class="dv-hdr-pill" style="background:#fef3c7; color:#92400e;">✏️ Edit</a>
+            <a asp-action="DeleteDepartment" asp-controller="Department"
+               asp-route-id="@Model.DepartmentID"
+               class="dv-hdr-pill" style="background:#fee2e2; color:#991b1b;"
+               onclick="return confirm('Are you sure you want to delete this department?');">🗑 Delete</a>
+          </div>
+        </div>
+
+        <div class="dv-card-body">
+          <!-- Logo + Name -->
+          <div class="d-flex align-items-center gap-4 mb-3">
+            @if (!string.IsNullOrEmpty(Model.DepartmentLogo))
+            {
+              <img src="@Model.DepartmentLogo" alt="@Model.DepartmentName" class="dv-logo" />
+            }
+            else
+            {
+              <div class="dv-logo-ph">
+                @Model.DepartmentName?.Substring(0,1).ToUpper()
+              </div>
+            }
+            <div>
+              <div class="dv-label">Department Name</div>
+              <div class="dv-name-badge">@Model.DepartmentName</div>
+            </div>
+          </div>
+
+          <!-- Info Grid -->
+          <div class="dv-info-row">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="dv-label">Department ID</div>
+                <div class="dv-val">#@Model.DepartmentID</div>
+              </div>
+              <div class="col-md-4">
+                <div class="dv-label">Created</div>
+                <div class="dv-val">📅 @Model.Created.ToString("dd MMM yyyy")</div>
+              </div>
+              <div class="col-md-4">
+                <div class="dv-label">Last Modified</div>
+                <div class="dv-val">📅 @Model.Modified.ToString("dd MMM yyyy")</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Logo Path -->
+          @if (!string.IsNullOrEmpty(Model.DepartmentLogo))
+          {
+            <div class="dv-info-row mt-3">
+              <div class="dv-label">Logo Path</div>
+              <div class="dv-val" style="font-size:12px; word-break:break-all;">@Model.DepartmentLogo</div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Staff Members (Full width on left) -->
+      <div class="dv-card">
+        <div class="dv-card-header dv-hdr-staff">
+          <span>👥</span>
+          <span>Staff Members (@staffList.Count)</span>
+          <div class="ms-auto">
+            <a asp-action="StaffList" asp-controller="Staff"
+               class="dv-hdr-pill" style="background:rgba(255,255,255,0.2); color:#fff;">View All →</a>
+          </div>
+        </div>
+        <div class="dv-card-body">
+          @if (staffList.Count > 0)
+          {
+            foreach (var staff in staffList)
+            {
+              <div class="dv-staff">
+                <div class="dv-staff-avatar">
+                  @(string.IsNullOrWhiteSpace(staff.StaffName) ? "?" : staff.StaffName.Substring(0,1).ToUpper())
+                </div>
+                <div style="flex:1;">
+                  <div class="dv-staff-name">@staff.StaffName</div>
+                  <div class="dv-staff-email">@staff.EmailAddress</div>
+                </div>
+                <div>
+                  <span class="dv-staff-role">@(staff.Remarks ?? "Staff")</span>
+                </div>
+              </div>
+            }
+          }
+          else
+          {
+            <div class="text-center py-4 text-muted">
+              <span style="font-size:32px; display:block; margin-bottom:8px;">👥</span>
+              <div style="font-weight:600;">No staff members in this department</div>
+              <small>Add staff to get started</small>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ════════ RIGHT COLUMN (4 cols) ════════ -->
+    <div class="col-lg-4">
+
+      <!-- Statistics -->
+      <div class="dv-card">
+        <div class="dv-card-header dv-hdr-stats">
+          <span>📊</span>
+          <span>Statistics</span>
+        </div>
+        <div class="dv-card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="dv-stat">
+                <div class="dv-stat-num" style="color:#6366f1;">@ViewBag.StaffCount</div>
+                <div class="dv-stat-lbl">Staff Members</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="dv-stat">
+                <div class="dv-stat-num" style="color:#0ea5e9;">@ViewBag.MeetingCount</div>
+                <div class="dv-stat-lbl">Meetings</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="dv-stat">
+                <div class="dv-stat-num" style="color:#10b981;">@ViewBag.UpcomingCount</div>
+                <div class="dv-stat-lbl">Upcoming</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="dv-card">
+        <div class="dv-card-header dv-hdr-action">
+          <span>⚡</span>
+          <span>Quick Actions</span>
+        </div>
+        <div class="dv-card-body d-grid gap-2">
+          <a asp-action="DepartmentAddEdit" asp-controller="Department"
+             asp-route-id="@Model.DepartmentID"
+             class="dv-action" style="background:#fef3c7; color:#92400e;">
+            ✏️ Edit Department
+          </a>
+          <a asp-action="StaffAddEdit" asp-controller="Staff"
+             class="dv-action" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff;">
+            ➕ Add Staff Member
+          </a>
+          <a asp-action="StaffList" asp-controller="Staff"
+             class="dv-action" style="background:#f0fdf4; color:#166534;">
+            👥 Manage All Staff
+          </a>
+          <a asp-action="DepartmentList" asp-controller="Department"
+             class="dv-action" style="background:#f1f5f9; color:#475569;">
+            ← Back to Departments
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

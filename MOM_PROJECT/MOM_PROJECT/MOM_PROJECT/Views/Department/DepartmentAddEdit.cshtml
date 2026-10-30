@@ -1,0 +1,81 @@
+@model MOM_PROJECT.Models.DepartmentModel
+
+@{
+    ViewData["Title"] = Model.DepartmentID == 0 ? "Add Department" : "Edit Department";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="mom-page-title">
+      @(Model.DepartmentID == 0 ? "➕ Add Department" : "✏️ Edit Department")
+    </div>
+    <div class="mom-page-subtitle">Add or update department information</div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="mom-card" style="max-width:700px; margin:auto;">
+    <div class="mom-card-header">
+      <h5>🏢 Department Details</h5>
+    </div>
+
+    <div class="mom-card-body">
+      <form asp-controller="Department" asp-action="DepartmentAddEdit" method="post" enctype="multipart/form-data">
+
+        <input type="hidden" asp-for="DepartmentID" />
+        <input type="hidden" asp-for="DepartmentLogo" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-4">
+          <label class="mom-label">Department Name</label>
+          <div class="input-group">
+            <span class="input-group-text" style="border-radius:12px 0 0 12px; background:#eef2ff; border:1.5px solid #e5e7eb; border-right:none;">🏢</span>
+            <input asp-for="DepartmentName"
+                   class="form-control mom-control"
+                   style="border-radius:0 12px 12px 0;"
+                   placeholder="e.g. Human Resources, IT, Finance" />
+          </div>
+          <span asp-validation-for="DepartmentName" class="text-danger small"></span>
+          <small class="text-muted">Enter a clear and descriptive department name.</small>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-4">
+          <label class="mom-label">Department Logo</label>
+          <div class="input-group">
+            <span class="input-group-text" style="border-radius:12px 0 0 12px; background:#eef2ff; border:1.5px solid #e5e7eb; border-right:none;">🖼️</span>
+            <input type="file" asp-for="LogoFile"
+                   class="form-control mom-control"
+                   style="border-radius:0 12px 12px 0;"
+                   accept="image/*" />
+          </div>
+          <small class="text-muted">Upload a logo image (PNG, JPG, GIF). Leave empty to keep current logo.</small>
+
+          @if (!string.IsNullOrEmpty(Model.DepartmentLogo))
+          {
+            <div class="mt-3 p-3" style="background:#f8f9ff; border-radius:12px; border:1.5px dashed #c7d2fe;">
+              <span class="text-muted small d-block mb-2">Current Logo:</span>
+              <img src="@Model.DepartmentLogo" alt="Department Logo"
+                   style="max-height:100px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
+            </div>
+          }
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <a asp-action="DepartmentList" asp-controller="Department"
+             class="btn btn-outline-secondary mom-btn-back">← Back to List</a>
+          <button type="submit" class="mom-btn-save">
+            ✔ @(Model.DepartmentID == 0 ? "Save Department" : "Update Department")
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>

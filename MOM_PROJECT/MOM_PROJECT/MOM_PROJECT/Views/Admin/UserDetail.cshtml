@@ -1,0 +1,484 @@
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    ViewBag.Title = "User Details";
+
+    var userInfo       = ViewBag.UserInfo as Dictionary<string, object> ?? new();
+    var meetings       = ViewBag.UserMeetings as List<Dictionary<string, object>> ?? new();
+    var staff          = ViewBag.UserStaff as List<Dictionary<string, object>> ?? new();
+    var departments    = ViewBag.UserDepartments as List<Dictionary<string, object>> ?? new();
+    var meetingTypes   = ViewBag.UserMeetingTypes as List<Dictionary<string, object>> ?? new();
+    var meetingVenues  = ViewBag.UserMeetingVenues as List<Dictionary<string, object>> ?? new();
+    var activeTab      = ViewBag.ActiveTab?.ToString() ?? "meetings";
+    int targetUserId   = ViewBag.TargetUserID;
+
+    var username = userInfo.ContainsKey("Username") ? userInfo["Username"].ToString() : "Unknown";
+    var role     = userInfo.ContainsKey("Role") ? userInfo["Role"].ToString() : "Member";
+    var created  = userInfo.ContainsKey("Created") ? Convert.ToDateTime(userInfo["Created"]).ToString("dd MMM yyyy") : "";
+}
+
+<style>
+  .user-detail-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    border-radius: 18px;
+    padding: 1.6rem 2rem;
+    color: #e2e8f0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 30px rgba(15,23,42,.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .user-detail-header::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -5%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(14,165,233,.08), transparent 70%);
+    border-radius: 50%;
+  }
+  .user-detail-header .avatar {
+    width: 68px; height: 68px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(14,165,233,.15), rgba(6,182,212,.1));
+    border: 2px solid rgba(14,165,233,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; font-weight: 800;
+    flex-shrink: 0;
+    color: #0ea5e9;
+    font-family: "Inter", sans-serif;
+  }
+  .user-detail-header h2 {
+    font-size: 1.5rem; font-weight: 800; margin: 0;
+    color: #f1f5f9;
+    font-family: "Inter", sans-serif;
+    letter-spacing: -0.3px;
+  }
+  .user-detail-header .meta {
+    font-size: .82rem; color: #64748b;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+
+  .data-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    background: #f1f5f9;
+    border-radius: 14px;
+    padding: 5px;
+    border: 1px solid #e2e8f0;
+  }
+  .data-tab {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    background: transparent;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .data-tab:hover { background: rgba(14,165,233,.06); color: #0369a1; }
+  .data-tab.active {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #e2e8f0;
+    box-shadow: 0 4px 14px rgba(15,23,42,.2);
+  }
+  .data-tab .badge-count {
+    background: rgba(255,255,255,.15);
+    border-radius: 20px;
+    padding: 1px 8px;
+    font-size: .65rem;
+  }
+  .data-tab.active .badge-count {
+    background: rgba(14,165,233,.3);
+    color: #7dd3fc;
+  }
+  .data-tab:not(.active) .badge-count { background: rgba(100,116,139,.12); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeTab .3s ease; }
+  @@keyframes fadeTab {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .stat-mini { text-align: center; flex: 1; }
+  .stat-mini .num {
+    font-size: 1.5rem; font-weight: 800;
+    font-family: "Inter", sans-serif;
+    color: #f1f5f9;
+  }
+  .stat-mini .lbl {
+    font-size: .62rem; text-transform: uppercase; letter-spacing: .8px;
+    color: #64748b; font-weight: 700;
+  }
+
+  .back-btn {
+    background: rgba(14,165,233,.1);
+    border: 1px solid rgba(14,165,233,.2);
+    color: #0ea5e9;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: .8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Inter", sans-serif;
+  }
+  .back-btn:hover { background: rgba(14,165,233,.2); color: #0ea5e9; }
+
+  .danger-zone {
+    background: linear-gradient(135deg, rgba(220,38,38,.03), rgba(248,113,113,.05));
+    border: 1px solid rgba(220,38,38,.12);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 2rem;
+  }
+
+  /* Tab section headers */
+  .tab-section-header {
+    border-radius: 16px 16px 0 0;
+    padding: .9rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tab-section-header h6 {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: .88rem;
+    color: #e2e8f0;
+  }
+</style>
+
+<!-- User Header -->
+<div class="user-detail-header">
+  <a asp-action="AdminDashboard" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Back
+  </a>
+  <div class="avatar">@(username!.Substring(0,1).ToUpper())</div>
+  <div class="flex-grow-1">
+    <h2>@username</h2>
+    <div class="meta">
+      <span style="font-size:.65rem;background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;padding:2px 10px;border-radius:6px;font-weight:700;">@role</span>
+      <span>·</span>
+      <span>Joined @created</span>
+      <span>·</span>
+      <span>ID: @targetUserId</span>
+    </div>
+  </div>
+  <div class="d-flex gap-3">
+    <div class="stat-mini">
+      <div class="num">@meetings.Count</div>
+      <div class="lbl">Meetings</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">@staff.Count</div>
+      <div class="lbl">Staff</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">@departments.Count</div>
+      <div class="lbl">Depts</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">@meetingTypes.Count</div>
+      <div class="lbl">Types</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">@meetingVenues.Count</div>
+      <div class="lbl">Venues</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="data-tabs">
+  <button class="data-tab @(activeTab == "meetings" ? "active" : "")" onclick="switchTab('meetings')">
+    <i class="bi bi-calendar-event"></i> Meetings <span class="badge-count">@meetings.Count</span>
+  </button>
+  <button class="data-tab @(activeTab == "staff" ? "active" : "")" onclick="switchTab('staff')">
+    <i class="bi bi-person-badge"></i> Staff <span class="badge-count">@staff.Count</span>
+  </button>
+  <button class="data-tab @(activeTab == "departments" ? "active" : "")" onclick="switchTab('departments')">
+    <i class="bi bi-diagram-3"></i> Departments <span class="badge-count">@departments.Count</span>
+  </button>
+  <button class="data-tab @(activeTab == "types" ? "active" : "")" onclick="switchTab('types')">
+    <i class="bi bi-bookmark-star"></i> Meeting Types <span class="badge-count">@meetingTypes.Count</span>
+  </button>
+  <button class="data-tab @(activeTab == "venues" ? "active" : "")" onclick="switchTab('venues')">
+    <i class="bi bi-pin-map"></i> Venues <span class="badge-count">@meetingVenues.Count</span>
+  </button>
+</div>
+
+<!-- ============ MEETINGS TAB ============ -->
+<div id="tab-meetings" class="tab-panel @(activeTab == "meetings" ? "active" : "")">
+  <div class="card border-0">
+    <div class="tab-section-header" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
+      <h6><i class="bi bi-calendar-event me-2" style="color:#0ea5e9;"></i>Meetings by @username <span style="color:#64748b;font-weight:400;">(@meetings.Count)</span></h6>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 admin-table">
+          <thead>
+            <tr>
+              <th class="ps-3">#</th><th>Date</th><th>Description</th><th>Department</th>
+              <th>Type</th><th>Status</th><th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @{ int mi = 1; }
+            @foreach (var m in meetings)
+            {
+              var cancelled = Convert.ToBoolean(m["IsCancelled"]);
+              <tr>
+                <td class="ps-3" style="color:#94a3b8;font-size:.78rem;">@(mi++)</td>
+                <td style="font-size:.82rem;white-space:nowrap;color:#334155;font-weight:600;">@Convert.ToDateTime(m["MeetingDate"]).ToString("dd MMM yy HH:mm")</td>
+                <td style="font-size:.82rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="@m["MeetingDescription"]">@m["MeetingDescription"]</td>
+                <td style="font-size:.82rem;">@m["DepartmentName"]</td>
+                <td><span class="badge" style="background:#eff6ff;color:#1e40af;font-size:.72rem;font-weight:600;">@m["MeetingTypeName"]</span></td>
+                <td>
+                  @if (cancelled) { <span class="badge" style="background:linear-gradient(135deg,#991b1b,#dc2626);font-size:.7rem;" title="@m["CancellationReason"]">Cancelled</span> }
+                  else            { <span class="badge" style="background:linear-gradient(135deg,#047857,#10b981);font-size:.7rem;">Active</span> }
+                </td>
+                <td class="text-center" style="white-space:nowrap;">
+                  <a asp-action="AllMeetingMembers" asp-route-meetingId="@m["MeetingID"]" asp-route-userId="@targetUserId" class="btn-admin-view me-1" style="font-size:.72rem;">
+                    <i class="bi bi-people me-1"></i>Members
+                  </a>
+                  <a asp-action="AdminEditMeeting" asp-route-id="@m["MeetingID"]" asp-route-userId="@targetUserId" class="btn-admin-edit me-1" style="font-size:.72rem;">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <button onclick="confirmDelete('@Url.Action("AdminDeleteMeeting","Admin",new{id=m["MeetingID"],userId=targetUserId})', 'this meeting')"
+                          class="btn-admin-delete" style="font-size:.72rem;"><i class="bi bi-trash3"></i></button>
+                </td>
+              </tr>
+            }
+            @if (!meetings.Any())
+            {
+              <tr><td colspan="7" class="text-center py-4" style="color:#94a3b8;">No meetings found for this user.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STAFF TAB ============ -->
+<div id="tab-staff" class="tab-panel @(activeTab == "staff" ? "active" : "")">
+  <div class="card border-0">
+    <div class="tab-section-header" style="background:linear-gradient(135deg,#047857,#10b981);">
+      <h6><i class="bi bi-person-badge me-2"></i>Staff by @username <span style="opacity:.7;">(@staff.Count)</span></h6>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 admin-table">
+          <thead>
+            <tr>
+              <th class="ps-3">#</th><th>Name</th><th>Mobile</th><th>Email</th>
+              <th>Department</th><th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @{ int si = 1; }
+            @foreach (var s in staff)
+            {
+              <tr>
+                <td class="ps-3" style="color:#94a3b8;font-size:.78rem;">@(si++)</td>
+                <td style="font-size:.85rem;font-weight:700;color:#0f172a;">@s["StaffName"]</td>
+                <td style="font-size:.82rem;">@s["MobileNo"]</td>
+                <td style="font-size:.82rem;">@s["EmailAddress"]</td>
+                <td><span class="badge" style="background:#ecfdf5;color:#047857;font-size:.72rem;font-weight:600;">@s["DepartmentName"]</span></td>
+                <td class="text-center" style="white-space:nowrap;">
+                  <a asp-action="AdminEditStaff" asp-route-id="@s["StaffID"]" asp-route-userId="@targetUserId" class="btn-admin-edit me-1" style="font-size:.72rem;">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                  </a>
+                  <button onclick="confirmDelete('@Url.Action("AdminDeleteStaff","Admin",new{id=s["StaffID"],userId=targetUserId})', '@s["StaffName"]')"
+                          class="btn-admin-delete" style="font-size:.72rem;"><i class="bi bi-trash3 me-1"></i>Delete</button>
+                </td>
+              </tr>
+            }
+            @if (!staff.Any())
+            {
+              <tr><td colspan="6" class="text-center py-4" style="color:#94a3b8;">No staff found for this user.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DEPARTMENTS TAB ============ -->
+<div id="tab-departments" class="tab-panel @(activeTab == "departments" ? "active" : "")">
+  <div class="card border-0">
+    <div class="tab-section-header" style="background:linear-gradient(135deg,#b45309,#f59e0b);">
+      <h6><i class="bi bi-diagram-3 me-2"></i>Departments by @username <span style="opacity:.7;">(@departments.Count)</span></h6>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 admin-table">
+          <thead>
+            <tr>
+              <th class="ps-3">#</th><th>Department Name</th><th>Staff Count</th><th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @{ int di = 1; }
+            @foreach (var d in departments)
+            {
+              <tr>
+                <td class="ps-3" style="color:#94a3b8;font-size:.78rem;">@(di++)</td>
+                <td style="font-size:.85rem;font-weight:700;color:#0f172a;">@d["DepartmentName"]</td>
+                <td><span class="badge" style="background:#fffbeb;color:#b45309;font-size:.72rem;font-weight:600;">@d["StaffCount"] staff</span></td>
+                <td class="text-center" style="white-space:nowrap;">
+                  <a asp-action="AdminEditDept" asp-route-id="@d["DepartmentID"]" asp-route-userId="@targetUserId" class="btn-admin-edit me-1" style="font-size:.72rem;">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                  </a>
+                  <button onclick="confirmDelete('@Url.Action("AdminDeleteDept","Admin",new{id=d["DepartmentID"],userId=targetUserId})', '@d["DepartmentName"]')"
+                          class="btn-admin-delete" style="font-size:.72rem;"><i class="bi bi-trash3 me-1"></i>Delete</button>
+                </td>
+              </tr>
+            }
+            @if (!departments.Any())
+            {
+              <tr><td colspan="4" class="text-center py-4" style="color:#94a3b8;">No departments found for this user.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MEETING TYPES TAB ============ -->
+<div id="tab-types" class="tab-panel @(activeTab == "types" ? "active" : "")">
+  <div class="card border-0">
+    <div class="tab-section-header" style="background:linear-gradient(135deg,#1e40af,#3b82f6);">
+      <h6><i class="bi bi-bookmark-star me-2"></i>Meeting Types by @username <span style="opacity:.7;">(@meetingTypes.Count)</span></h6>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 admin-table">
+          <thead>
+            <tr>
+              <th class="ps-3">#</th><th>Type Name</th><th>Remarks</th><th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @{ int ti = 1; }
+            @foreach (var t in meetingTypes)
+            {
+              <tr>
+                <td class="ps-3" style="color:#94a3b8;font-size:.78rem;">@(ti++)</td>
+                <td style="font-size:.85rem;font-weight:700;color:#0f172a;">@t["MeetingTypeName"]</td>
+                <td style="font-size:.82rem;color:#64748b;">@(t["Remarks"]?.ToString() ?? "—")</td>
+                <td class="text-center" style="white-space:nowrap;">
+                  <a asp-action="AdminEditType" asp-route-id="@t["MeetingTypeID"]" asp-route-userId="@targetUserId" class="btn-admin-edit me-1" style="font-size:.72rem;">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                  </a>
+                  <button onclick="confirmDelete('@Url.Action("AdminDeleteMeetingType","Admin",new{id=t["MeetingTypeID"],userId=targetUserId})', '@t["MeetingTypeName"]')"
+                          class="btn-admin-delete" style="font-size:.72rem;"><i class="bi bi-trash3 me-1"></i>Delete</button>
+                </td>
+              </tr>
+            }
+            @if (!meetingTypes.Any())
+            {
+              <tr><td colspan="4" class="text-center py-4" style="color:#94a3b8;">No meeting types found for this user.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VENUES TAB ============ -->
+<div id="tab-venues" class="tab-panel @(activeTab == "venues" ? "active" : "")">
+  <div class="card border-0">
+    <div class="tab-section-header" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+      <h6><i class="bi bi-pin-map me-2"></i>Venues by @username <span style="opacity:.7;">(@meetingVenues.Count)</span></h6>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 admin-table">
+          <thead>
+            <tr>
+              <th class="ps-3">#</th><th>Venue Name</th><th>Created</th><th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @{ int vi = 1; }
+            @foreach (var v in meetingVenues)
+            {
+              <tr>
+                <td class="ps-3" style="color:#94a3b8;font-size:.78rem;">@(vi++)</td>
+                <td style="font-size:.85rem;font-weight:700;color:#0f172a;">@v["MeetingVenueName"]</td>
+                <td style="font-size:.82rem;">@Convert.ToDateTime(v["Created"]).ToString("dd MMM yyyy")</td>
+                <td class="text-center" style="white-space:nowrap;">
+                  <a asp-action="AdminEditVenue" asp-route-id="@v["MeetingVenueID"]" asp-route-userId="@targetUserId" class="btn-admin-edit me-1" style="font-size:.72rem;">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                  </a>
+                  <button onclick="confirmDelete('@Url.Action("AdminDeleteVenue","Admin",new{id=v["MeetingVenueID"],userId=targetUserId})', '@v["MeetingVenueName"]')"
+                          class="btn-admin-delete" style="font-size:.72rem;"><i class="bi bi-trash3 me-1"></i>Delete</button>
+                </td>
+              </tr>
+            }
+            @if (!meetingVenues.Any())
+            {
+              <tr><td colspan="4" class="text-center py-4" style="color:#94a3b8;">No venues found for this user.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DANGER ZONE ============ -->
+<div class="danger-zone">
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+      <h6 class="mb-1 fw-bold" style="color:#991b1b;font-family:'Inter',sans-serif;">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Danger Zone
+      </h6>
+      <p class="mb-0" style="font-size:.82rem;color:#64748b;">
+        Deleting this user will permanently remove <strong>all</strong> their data — meetings, staff, departments, types, and venues. This cannot be undone.
+      </p>
+    </div>
+    <button onclick="confirmDelete('@Url.Action("DeleteUser","Admin",new{id=targetUserId})', '@username')"
+            class="btn fw-bold"
+            style="border-radius:10px;padding:8px 20px;font-size:.82rem;background:linear-gradient(135deg,#991b1b,#dc2626);color:#fff;border:none;font-family:'Inter',sans-serif;box-shadow:0 4px 16px rgba(220,38,38,.25);">
+      <i class="bi bi-trash3-fill me-2"></i>Delete User & All Data
+    </button>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  // Hide all panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  // Deactivate all buttons
+  document.querySelectorAll('.data-tab').forEach(b => b.classList.remove('active'));
+
+  // Show selected panel
+  document.getElementById('tab-' + tabName).classList.add('active');
+  // Activate matching button (by index mapping)
+  var tabMap = { 'meetings': 0, 'staff': 1, 'departments': 2, 'types': 3, 'venues': 4 };
+  document.querySelectorAll('.data-tab')[tabMap[tabName]].classList.add('active');
+}
+</script>

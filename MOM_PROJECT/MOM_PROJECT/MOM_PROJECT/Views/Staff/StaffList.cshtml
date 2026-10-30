@@ -1,0 +1,116 @@
+@model List<MOM_PROJECT.Models.StaffModel>
+
+@{
+    ViewData["Title"] = "Staff List";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <div class="mom-page-title">👤 Staff</div>
+      <div class="mom-page-subtitle">Manage all staff members and their details</div>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  @if (TempData["SuccessMessage"] != null)
+  {
+    <div class="mom-alert-success mb-3">✅ @TempData["SuccessMessage"]</div>
+  }
+  @if (TempData["ErrorMessage"] != null)
+  {
+    <div class="mom-alert-danger mb-3">⚠️ @TempData["ErrorMessage"]</div>
+  }
+
+  <!-- Search Form -->
+  <form method="post" asp-action="StaffList" asp-controller="Staff" class="mb-3">
+    <div class="mom-card" style="border-radius:14px;">
+      <div class="mom-card-body" style="padding:16px 24px;">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-5">
+            <label class="mom-label" style="margin-bottom:6px;">🔍 Search by Staff Name</label>
+            <input type="text" name="SearchText" class="form-control mom-control"
+                   placeholder="Enter staff name..." value="@ViewBag.SearchText" />
+          </div>
+          <div class="col-md-4 d-flex gap-2">
+            <button type="submit" class="mom-btn-save" style="padding:10px 24px;">
+              🔍 Search
+            </button>
+            <a asp-action="StaffList" asp-controller="Staff"
+               class="btn btn-outline-secondary mom-btn-back" style="padding:10px 20px;">
+              ↻ Reset
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Main Card -->
+  <div class="mom-card">
+    <div class="mom-card-header">
+      <h5>👥 All Staff Members</h5>
+      <a asp-action="StaffAddEdit" asp-controller="Staff" class="mom-btn-ghost">
+        + Add Staff
+      </a>
+    </div>
+
+    <div class="mom-card-body">
+      <table class="mom-table datatable">
+        <thead>
+          <tr>
+            <th>Staff Name</th>
+            <th data-searchable="false">Department</th>
+            <th data-searchable="false">Mobile</th>
+            <th data-searchable="false">Email</th>
+            <th data-searchable="false">Remarks</th>
+            <th data-searchable="false" class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (Model != null && Model.Count > 0)
+          {
+            foreach (var item in Model)
+            {
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="mom-avatar">@(string.IsNullOrWhiteSpace(item.StaffName) ? "?" : item.StaffName.Substring(0,1).ToUpper())</div>
+                    <span style="font-weight:600;color:#1e1b4b;">@item.StaffName</span>
+                  </div>
+                </td>
+                <td><span class="mom-pill-info">@item.DepartmentName</span></td>
+                <td style="font-size:13px;">@item.MobileNo</td>
+                <td style="font-size:13px;">@item.EmailAddress</td>
+                <td style="font-size:13px;color:#6b7280;">
+                  @(string.IsNullOrEmpty(item.Remarks) ? "—" : item.Remarks)
+                </td>
+                <td class="text-center">
+                  <div class="d-inline-flex gap-2">
+                    <a asp-action="StaffAddEdit" asp-route-id="@item.StaffID"
+                       class="mom-btn-edit">✏ Edit</a>
+                    <a asp-action="DeleteStaff" asp-route-id="@item.StaffID"
+                       class="mom-btn-delete"
+                       onclick="return confirm('Delete this staff member?');">🗑 Delete</a>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+          else
+          {
+            <tr>
+              <td colspan="6" class="text-center text-muted py-5">
+                <i class="bi bi-people fs-1 d-block mb-2 opacity-25"></i>
+                No staff records found
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

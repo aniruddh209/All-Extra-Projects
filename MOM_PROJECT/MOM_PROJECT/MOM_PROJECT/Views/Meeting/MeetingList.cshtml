@@ -1,0 +1,188 @@
+@model List<MOM_PROJECT.Models.MeetingModel>
+
+@{
+    ViewData["Title"] = "Meeting List";
+    Layout = "_Layout";
+}
+
+<style>
+.page-title    { font-size: 26px; font-weight: 700; color: #1e1b4b; }
+.page-subtitle { color: #6b7280; font-size: 14px; }
+.btn-add-meeting {
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.btn-add-meeting:hover {
+  background: rgba(255,255,255,0.30);
+  color: #fff;
+}
+.mom-table-wrap {
+  background: transparent;
+  padding: 0;
+}
+.action-group {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.action-group .btn {
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 5px 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <div class="page-title">📋 Meeting List</div>
+      <div class="page-subtitle">Manage all scheduled and past meetings</div>
+    </div>
+  </div>
+
+  <!-- Search Form -->
+  <form method="post" asp-action="MeetingList" asp-controller="Meeting" class="mb-3">
+    <div class="mom-card" style="border-radius:14px;">
+      <div class="mom-card-body" style="padding:16px 24px;">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-5">
+            <label class="mom-label" style="margin-bottom:6px;">🔍 Search by Description</label>
+            <input type="text" name="SearchText" class="form-control mom-control"
+                   placeholder="Enter meeting description..." value="@ViewBag.SearchText" />
+          </div>
+          <div class="col-md-4 d-flex gap-2">
+            <button type="submit" class="mom-btn-save" style="padding:10px 24px;">
+              🔍 Search
+            </button>
+            <a asp-action="MeetingList" asp-controller="Meeting"
+               class="btn btn-outline-secondary mom-btn-back" style="padding:10px 20px;">
+              ↻ Reset
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Main Card -->
+  <div class="mom-card">
+
+    <!-- Card Header -->
+    <div class="mom-card-header">
+      <h5>🗓 All Meetings</h5>
+      <a asp-action="MeetingAddEdit" asp-controller="Meeting" class="btn-add-meeting">
+        + Add Meeting
+      </a>
+    </div>
+
+    <!-- Table -->
+    <div class="mom-table-wrap">
+      <table class="mom-table datatable">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">Cancelled</th>
+            <th>Cancellation Info</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (Model != null && Model.Count > 0)
+          {
+            foreach (var item in Model)
+            {
+              <tr>
+                <td>
+                  @(string.IsNullOrWhiteSpace(item.MeetingDescription) ? "-" : item.MeetingDescription)
+                </td>
+                <td class="text-center">
+                  @(item.MeetingDate.HasValue
+                      ? item.MeetingDate.Value.ToString("dd/MM/yyyy")
+                      : "-")
+                </td>
+                <td class="text-center">
+                  @if (item.IsCancelled == true)
+                  {
+                    <span class="pill-canceled">Yes</span>
+                  }
+                  else
+                  {
+                    <span class="pill-active">No</span>
+                  }
+                </td>
+                <td>
+                  @if (item.IsCancelled == true)
+                  {
+                    <div style="font-size:13px;">
+                      @(item.CancellationDateTime.HasValue
+                          ? item.CancellationDateTime.Value.ToString("dd/MM/yyyy hh:mm tt")
+                          : "-")
+                    </div>
+                    <small class="text-muted">
+                      @(string.IsNullOrWhiteSpace(item.CancellationReason) ? "-" : item.CancellationReason)
+                    </small>
+                  }
+                  else
+                  {
+                    <span class="text-muted">—</span>
+                  }
+                </td>
+                <td class="text-center">
+                  <div class="action-group">
+                    <a asp-controller="MeetingMember"
+                       asp-action="MeetingMemberList"
+                       asp-route-meetingId="@item.MeetingID"
+                       class="btn btn-members">
+                      Members
+                    </a>
+                    <a asp-controller="Meeting"
+                       asp-action="MeetingAddEdit"
+                       asp-route-id="@item.MeetingID"
+                       class="btn btn-edit-row">
+                      Edit
+                    </a>
+                    <a asp-controller="Meeting"
+                       asp-action="DeleteMeeting"
+                       asp-route-id="@item.MeetingID"
+                       class="btn btn-delete-row"
+                       onclick="return confirm('Delete this meeting?');">
+                      Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+          else
+          {
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                <i class="bi bi-calendar-x fs-2 d-block mb-2 opacity-50"></i>
+                No meetings found
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+<script>
+  new simpleDatatables.DataTable(".datatable");
+</script>

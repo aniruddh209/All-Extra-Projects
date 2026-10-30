@@ -1,0 +1,180 @@
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    ViewBag.Title = "Admin Dashboard";
+
+    var allUsers = ViewBag.AllUsers as List<Dictionary<string, object>> ?? new();
+}
+
+<div class="pagetitle mb-3">
+  <h1><i class="bi bi-grid-1x2-fill me-2" style="color:var(--adm-primary);"></i>Dashboard</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">System Overview & Member Management</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- ── System Stats ── -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-blue">
+      <p>Total Members</p>
+      <h3>@ViewBag.TotalUsers</h3>
+      <i class="bi bi-people-fill stat-icon"></i>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card" style="background:linear-gradient(135deg,#1e293b,#334155);">
+      <p>Total Meetings</p>
+      <h3>@ViewBag.TotalMeetings</h3>
+      <i class="bi bi-calendar-event stat-icon"></i>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-green">
+      <p>Active Meetings</p>
+      <h3>@((int)ViewBag.TotalMeetings - (int)ViewBag.Cancelled)</h3>
+      <i class="bi bi-check-circle stat-icon"></i>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-red">
+      <p>Cancelled</p>
+      <h3>@ViewBag.Cancelled</h3>
+      <i class="bi bi-x-circle stat-icon"></i>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-teal">
+      <p>Total Staff</p>
+      <h3>@ViewBag.TotalStaff</h3>
+      <i class="bi bi-person-badge stat-icon"></i>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-orange">
+      <p>Departments</p>
+      <h3>@ViewBag.TotalDepts</h3>
+      <i class="bi bi-diagram-3 stat-icon"></i>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-indigo">
+      <p>Meeting Types</p>
+      <h3>@ViewBag.TotalTypes</h3>
+      <i class="bi bi-bookmark-star stat-icon"></i>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="admin-stat-card bg-admin-pink">
+      <p>Venues</p>
+      <h3>@ViewBag.TotalVenues</h3>
+      <i class="bi bi-pin-map stat-icon"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ── All Members — Click to manage ── -->
+<div class="card border-0">
+  <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center gap-2"
+       style="background:linear-gradient(135deg,#0f172a,#1e293b,#334155);border-radius:16px 16px 0 0;padding:1rem 1.4rem;">
+    <h5 class="mb-0 fw-bold" style="color:#e2e8f0;font-family:'Inter',sans-serif;">
+      <i class="bi bi-people-fill me-2" style="color:var(--adm-primary);"></i>All Members
+      <span style="color:var(--adm-primary);font-size:.85rem;">(@allUsers.Count)</span>
+      <span class="ms-2" style="font-size:.72rem;color:#64748b;font-weight:400;">Click on a member to manage their data</span>
+    </h5>
+    <a asp-controller="Admin" asp-action="UserAddEdit"
+       class="btn btn-sm fw-bold"
+       style="border-radius:10px;background:linear-gradient(135deg,var(--adm-primary),var(--adm-accent));color:#fff;padding:6px 16px;font-size:.8rem;font-family:'Inter',sans-serif;border:none;box-shadow:0 2px 10px rgba(14,165,233,.3);">
+      <i class="bi bi-plus-lg me-1"></i>Add User
+    </a>
+  </div>
+
+  <div class="card-body p-3">
+    @if (!allUsers.Any())
+    {
+      <div class="text-center py-5" style="color:#94a3b8;">
+        <i class="bi bi-people" style="font-size:3.5rem;opacity:.25;"></i>
+        <p class="mt-2" style="font-family:'Inter',sans-serif;">No members found. Add a new user to get started.</p>
+      </div>
+    }
+    else
+    {
+      <div class="row g-3">
+        @foreach (var u in allUsers)
+        {
+          var uid = u["UserID"];
+          var username = u["Username"].ToString()!;
+          var role = u["Role"].ToString() ?? "Member";
+          var created = Convert.ToDateTime(u["Created"]).ToString("dd MMM yyyy");
+          var meetingCount = Convert.ToInt32(u["MeetingCount"]);
+          var staffCount = Convert.ToInt32(u["StaffCount"]);
+          var deptCount = Convert.ToInt32(u["DeptCount"]);
+          var typeCount = Convert.ToInt32(u["TypeCount"]);
+          var venueCount = Convert.ToInt32(u["VenueCount"]);
+
+          <div class="col-md-6 col-xl-4">
+            <div style="border:1px solid #e2e8f0; border-radius:16px; padding:1.2rem; cursor:pointer; transition: all 0.3s cubic-bezier(.4,0,.2,1); position:relative; overflow:hidden; background:#fff;"
+                 onclick="window.location.href='@Url.Action("UserDetail", "Admin", new { id = uid })'"
+                 onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 16px 40px rgba(14,165,233,.1)';this.style.borderColor='rgba(14,165,233,.3)'"
+                 onmouseout="this.style.transform='none';this.style.boxShadow='none';this.style.borderColor='#e2e8f0'">
+
+              <!-- User avatar & name -->
+              <div class="d-flex align-items-center mb-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center me-3"
+                     style="width:48px;height:48px;background:linear-gradient(135deg,#0f172a,#1e293b);color:#0ea5e9;font-weight:800;font-size:1.1rem;flex-shrink:0;font-family:'Inter',sans-serif;border:2px solid rgba(14,165,233,.2);">
+                  @(username.Substring(0, 1).ToUpper())
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold" style="font-size:.95rem;color:#0f172a;font-family:'Inter',sans-serif;">@username</h6>
+                  <div class="d-flex align-items-center gap-2 mt-1">
+                    <span style="font-size:.6rem;background:linear-gradient(135deg,var(--adm-primary),var(--adm-accent));color:#fff;padding:2px 8px;border-radius:6px;font-weight:700;letter-spacing:.5px;">@role</span>
+                    <span style="font-size:.68rem;color:#94a3b8;">Since @created</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data counts -->
+              <div class="d-flex gap-2 mb-3">
+                <div class="text-center" style="flex:1;background:#f0f9ff;border-radius:10px;padding:6px 2px;">
+                  <div style="font-size:1.1rem;font-weight:800;color:#0369a1;font-family:'Inter',sans-serif;">@meetingCount</div>
+                  <div style="font-size:.5rem;color:#64748b;text-transform:uppercase;letter-spacing:.3px;font-weight:700;">Meetings</div>
+                </div>
+                <div class="text-center" style="flex:1;background:#ecfdf5;border-radius:10px;padding:6px 2px;">
+                  <div style="font-size:1.1rem;font-weight:800;color:#047857;font-family:'Inter',sans-serif;">@staffCount</div>
+                  <div style="font-size:.5rem;color:#64748b;text-transform:uppercase;letter-spacing:.3px;font-weight:700;">Staff</div>
+                </div>
+                <div class="text-center" style="flex:1;background:#fffbeb;border-radius:10px;padding:6px 2px;">
+                  <div style="font-size:1.1rem;font-weight:800;color:#b45309;font-family:'Inter',sans-serif;">@deptCount</div>
+                  <div style="font-size:.5rem;color:#64748b;text-transform:uppercase;letter-spacing:.3px;font-weight:700;">Depts</div>
+                </div>
+                <div class="text-center" style="flex:1;background:#eff6ff;border-radius:10px;padding:6px 2px;">
+                  <div style="font-size:1.1rem;font-weight:800;color:#1e40af;font-family:'Inter',sans-serif;">@typeCount</div>
+                  <div style="font-size:.5rem;color:#64748b;text-transform:uppercase;letter-spacing:.3px;font-weight:700;">Types</div>
+                </div>
+                <div class="text-center" style="flex:1;background:#f0fdfa;border-radius:10px;padding:6px 2px;">
+                  <div style="font-size:1.1rem;font-weight:800;color:#0f766e;font-family:'Inter',sans-serif;">@venueCount</div>
+                  <div style="font-size:.5rem;color:#64748b;text-transform:uppercase;letter-spacing:.3px;font-weight:700;">Venues</div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size:.73rem;color:var(--adm-primary);font-weight:700;font-family:'Inter',sans-serif;">
+                  <i class="bi bi-arrow-right-circle-fill me-1"></i>Manage Data →
+                </span>
+                <button onclick="event.stopPropagation();confirmDelete('@Url.Action("DeleteUser","Admin",new{id=uid})', '@username')"
+                        class="btn-admin-delete" style="font-size:.62rem;padding:3px 10px;">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,79 @@
+@model MOM_PROJECT.Models.StaffModel
+
+@{
+    ViewData["Title"] = Model.StaffID == 0 ? "Add Staff" : "Edit Staff";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="mom-page-title">
+      @(Model.StaffID == 0 ? "➕ Add Staff Member" : "✏️ Edit Staff Member")
+    </div>
+    <div class="mom-page-subtitle">Add or update staff member details</div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="mom-card" style="max-width:960px; margin:auto;">
+    <div class="mom-card-header">
+      <h5>👤 Staff Details</h5>
+    </div>
+
+    <div class="mom-card-body">
+      <form asp-action="StaffAddEdit" method="post">
+
+        <input asp-for="StaffID" type="hidden" />
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="mom-label">Staff ID</label>
+            <input class="form-control mom-control"
+                   value="@(Model.StaffID == 0 ? "Auto" : Model.StaffID)"
+                   disabled />
+          </div>
+
+          <div class="col-md-4">
+            <label class="mom-label">Staff Name</label>
+            <input asp-for="StaffName" class="form-control mom-control" placeholder="Full name" />
+          </div>
+
+          <div class="col-md-4">
+            <label class="mom-label">Mobile Number</label>
+            <input asp-for="MobileNo" class="form-control mom-control" placeholder="+91 XXXXX XXXXX" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="mom-label">Email Address</label>
+            <input asp-for="EmailAddress" class="form-control mom-control" placeholder="name@company.com" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="mom-label">Department</label>
+            <select asp-for="DepartmentID" asp-items="Model.DepartmentList"
+                    class="form-select mom-control">
+              <option value="">-- Select Department --</option>
+            </select>
+          </div>
+
+          <div class="col-md-12">
+            <label class="mom-label">Remarks</label>
+            <input asp-for="Remarks" class="form-control mom-control" placeholder="Optional notes..." />
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <a asp-action="StaffList" class="btn btn-outline-secondary mom-btn-back">← Back to List</a>
+          <button type="submit" class="mom-btn-save">
+            ✔ @(Model.StaffID == 0 ? "Save Staff" : "Update Staff")
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,90 @@
+/* Container */
+.review-container {
+  padding: 2rem;
+  background: #0d1117; /* Dark gaming background */
+  min-height: 100vh;
+  color: #f5f6fa;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title */
+.review-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #ffb347;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Grid Layout */
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Each Card */
+.review-card {
+  background: linear-gradient(135deg, #23272a, #2c2f33);
+  border-radius: 14px;
+  padding: 1.2rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Card Header */
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Game Image */
+.review-img {
+  width: 90px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Game Name */
+.review-name {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #f1f1f1;
+}
+
+/* Rating */
+.review-rating {
+  color: #ffd369;
+  font-weight: bold;
+}
+
+/* Platforms */
+.review-platforms {
+  color: #00adb5;
+  font-size: 0.9rem;
+}
+
+/* Review Text */
+.review-text {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #dcdde1;
+}
+
+/* Loading */
+.loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ffb347;
+}

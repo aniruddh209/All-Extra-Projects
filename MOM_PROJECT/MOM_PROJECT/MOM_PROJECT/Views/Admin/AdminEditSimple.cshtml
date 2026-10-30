@@ -1,0 +1,73 @@
+@model MOM_PROJECT.Models.AdminEditSimpleModel
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    string label = ViewBag.EntityLabel ?? "Item";
+    string action = ViewBag.Action ?? "";
+    string backAction = ViewBag.BackAction ?? "AdminDashboard";
+    bool hasRemarks = label == "Meeting Type";
+    int? returnUserId = ViewBag.ReturnUserID as int?;
+}
+<div class="pagetitle mb-3">
+  <h1><i class="bi bi-pencil-square me-2" style="color:var(--adm-primary);"></i>Edit @label</h1>
+  <nav><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-action="AdminDashboard">Dashboard</a></li>
+    @if (returnUserId.HasValue)
+    {
+      <li class="breadcrumb-item"><a asp-action="UserDetail" asp-route-id="@returnUserId.Value">User</a></li>
+    }
+    <li class="breadcrumb-item"><a asp-action="@backAction">@label</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+  </ol></nav>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card border-0 shadow-sm" style="border-radius:16px;">
+      <div class="card-header border-0" style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px 16px 0 0;padding:1rem 1.4rem;">
+        <h6 class="mb-0 text-white fw-bold"><i class="bi bi-pencil me-2"></i>Edit @label Details</h6>
+      </div>
+      <div class="card-body p-4">
+        <form asp-action="@action" method="post">
+          @Html.AntiForgeryToken()
+          <input asp-for="ID" type="hidden" />
+          @if (returnUserId.HasValue)
+          {
+            <input type="hidden" name="userId" value="@returnUserId.Value" />
+          }
+
+          <div class="mb-3">
+            <label asp-for="Name" class="form-label fw-semibold">@label Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter @label name" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+          </div>
+
+          @if (hasRemarks)
+          {
+            <div class="mb-4">
+              <label asp-for="Remarks" class="form-label fw-semibold">Remarks</label>
+              <textarea asp-for="Remarks" class="form-control" rows="3" placeholder="Optional remarks…"></textarea>
+            </div>
+          }
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn fw-bold px-4"
+                    style="background:linear-gradient(135deg,var(--adm-primary),var(--adm-accent));color:#fff;border:none;border-radius:10px;box-shadow:0 4px 14px rgba(14,165,233,.25);font-family:'Inter',sans-serif;">
+              <i class="bi bi-save me-1"></i>Update
+            </button>
+            @if (returnUserId.HasValue)
+            {
+              <a asp-action="UserDetail" asp-route-id="@returnUserId.Value" class="btn btn-outline-secondary" style="border-radius:8px;">
+                <i class="bi bi-x me-1"></i>Cancel
+              </a>
+            }
+            else
+            {
+              <a asp-action="@backAction" class="btn btn-outline-secondary" style="border-radius:8px;">
+                <i class="bi bi-x me-1"></i>Cancel
+              </a>
+            }
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,232 @@
+@model MOM_PROJECT.Models.MeetingMemberModel
+
+@{
+    ViewData["Title"] = Model.MeetingMemberID == 0 ? "Add Meeting Member" : "Edit Meeting Member";
+    Layout = "_Layout";
+}
+
+<style>
+/* ── Page Header ─────────────────────────────────── */
+.page-title   { font-size: 26px; font-weight: 700; color: #1e1b4b; }
+.page-subtitle{ color: #6b7280; font-size: 14px; }
+
+/* ── Card ─────────────────────────────────────────── */
+.mom-form-card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(79, 70, 229, 0.12);
+  max-width: 820px;
+  margin: auto;
+  overflow: hidden;
+}
+.mom-form-card .card-header {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 17px 26px;
+  border: none;
+}
+.mom-form-card .card-body {
+  padding: 32px;
+  background: #fff;
+}
+
+/* ── Form Controls ────────────────────────────────── */
+.form-label {
+  font-weight: 600;
+  color: #1e1b4b;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+.form-control,
+.form-select {
+  border-radius: 12px;
+  padding: 11px 14px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 0.15rem rgba(99,102,241,0.20);
+}
+.form-control:disabled,
+.form-select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ── Presence toggle pills ────────────────────────── */
+.presence-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+.presence-pill {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  user-select: none;
+}
+.presence-pill.active-present {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.presence-pill.active-absent {
+  border-color: #ef4444;
+  background: #fff5f5;
+  color: #dc2626;
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+.btn-save {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  padding: 11px 28px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.btn-save:hover { opacity: 0.88; transform: translateY(-1px); color: #fff; }
+.btn-back {
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ── Section divider ─────────────────────────────── */
+.section-divider {
+  margin: 24px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #6366f1;
+}
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="page-title">
+      @(Model.MeetingMemberID == 0 ? "➕ Add Meeting Member" : "✏️ Edit Meeting Member")
+    </div>
+    <div class="page-subtitle">Add or update member details for this meeting</div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="mom-form-card">
+    <div class="card-header">
+      @(Model.MeetingMemberID == 0 ? "👤 Member Details" : "✏️ Member Details")
+    </div>
+
+    <div class="card-body">
+      <form asp-action="MeetingMemberSave" method="post">
+
+        <!-- Hidden Fields -->
+        <input type="hidden" asp-for="MeetingMemberID" />
+        <input type="hidden" asp-for="MeetingID" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-3">
+
+          <!-- Meeting (Disabled display) -->
+          <div class="col-md-6">
+            <label class="form-label">Meeting</label>
+            <select asp-for="MeetingID"
+                    asp-items="Model.MeetingList"
+                    class="form-select"
+                    disabled>
+            </select>
+          </div>
+
+          <!-- Staff -->
+          <div class="col-md-6">
+            <label class="form-label">Staff Member</label>
+            @if (Model.MeetingMemberID == 0)
+            {
+              <select asp-for="StaffID"
+                      asp-items="Model.StaffList"
+                      class="form-select">
+                <option value="">-- Select Staff --</option>
+              </select>
+            }
+            else
+            {
+              <select asp-for="StaffID"
+                      asp-items="Model.StaffList"
+                      class="form-select"
+                      disabled>
+              </select>
+              <input type="hidden" asp-for="StaffID" />
+            }
+            <span asp-validation-for="StaffID" class="text-danger small"></span>
+          </div>
+
+        </div>
+
+        <div class="section-divider">Attendance</div>
+
+        <div class="row g-3">
+
+          <!-- Is Present -->
+          <div class="col-md-6">
+            <label class="form-label">Attendance Status</label>
+            <select asp-for="IsPresent" class="form-select" id="IsPresentSelect">
+              <option value="">-- Select Status --</option>
+              <option value="true">Present</option>
+              <option value="false">Absent</option>
+            </select>
+          </div>
+
+          <!-- Remarks -->
+          <div class="col-md-6">
+            <label class="form-label">Remarks</label>
+            <input asp-for="Remarks" class="form-control" placeholder="Optional notes..." />
+          </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4 d-flex justify-content-end gap-2">
+          <a asp-action="MeetingMemberList"
+             asp-route-meetingId="@Model.MeetingID"
+             class="btn btn-outline-secondary btn-back">
+            ← Back to List
+          </a>
+          <button type="submit" class="btn-save">
+            ✔ @(Model.MeetingMemberID == 0 ? "Save Member" : "Update Member")
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

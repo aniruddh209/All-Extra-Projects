@@ -1,0 +1,149 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+/* ─────────────────────────────────────────────────────────────
+   GSTBilling PRO — Master Global Styling & Utility Bindings
+   Phase 1 Foundation: Tailwind v4 Theme Tokens & Core Systems
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Surface & Container Colors */
+  --color-app-bg: var(--background);
+  --color-app-sidebar: var(--sidebar);
+  --color-app-topbar: var(--topbar);
+  --color-app-surface: var(--surface);
+  --color-app-surface-elevated: var(--surface-elevated);
+  --color-app-surface-hover: var(--surface-hover);
+
+  /* Borders */
+  --color-app-border: var(--border);
+  --color-app-border-strong: var(--border-strong);
+
+  /* Typography */
+  --color-app-primary: var(--text-primary);
+  --color-app-secondary: var(--text-secondary);
+  --color-app-muted: var(--text-muted);
+  --color-app-disabled: var(--text-disabled);
+
+  /* Brand Accents */
+  --color-brand-primary: var(--primary);
+  --color-brand-hover: var(--primary-hover);
+
+  /* Semantic Feedback */
+  --color-semantic-success: var(--success);
+  --color-semantic-warning: var(--warning);
+  --color-semantic-danger: var(--danger);
+  --color-semantic-info: var(--info);
+
+  /* Responsive Breakpoints (Specification Aligned) */
+  --breakpoint-xs: 390px;
+  --breakpoint-phone: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+  --breakpoint-max: 1600px;
+}
+
+/* Base Document Setup */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+/* Master Layout Constraints */
+.app-container {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+/* Responsive Content Padding */
+.app-content-padding {
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .app-content-padding {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-content-padding {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .app-content-padding {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .app-content-padding {
+    padding: 32px;
+  }
+}
+
+/* Accessible Focus States */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Custom Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* Subtle Interactive Transitions */
+button,
+a,
+input,
+select,
+textarea {
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+/* Text Selection */
+::selection {
+  background-color: rgba(99, 102, 241, 0.25);
+  color: var(--text-primary);
+}

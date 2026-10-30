@@ -1,0 +1,293 @@
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "_Layout";
+    string profilePhoto = ViewBag.ProfilePhoto?.ToString() ?? "";
+    bool hasPhoto = !string.IsNullOrEmpty(profilePhoto);
+}
+
+<style>
+.mom-profile-nav {
+    border-bottom: 2px solid var(--th-row-border, #e5e7eb) !important;
+}
+.mom-profile-nav .nav-link {
+    font-weight: 600;
+    color: var(--th-text-muted, #6b7280) !important;
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+    background: transparent !important;
+    padding: 12px 20px;
+    transition: all 0.2s ease;
+}
+.mom-profile-nav .nav-link:hover {
+    color: var(--th-text, #111111) !important;
+}
+.mom-profile-nav .nav-link.active {
+    color: #6366f1 !important;
+    border-bottom: 3px solid #6366f1 !important;
+}
+body[data-theme="dark"] .mom-profile-nav .nav-link:hover {
+    color: #fff !important;
+}
+.profile-photo-wrap {
+    position: relative;
+    display: inline-block;
+}
+.profile-photo-wrap img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--mom-primary, #6366f1);
+    padding: 4px;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.2);
+}
+.profile-photo-placeholder {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    border: 4px solid #e5e7eb;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.2);
+}
+</style>
+
+<div class="container-fluid px-4 mt-4">
+  
+  <div class="mb-4">
+    <div class="mom-page-title">
+      👤 My Profile
+    </div>
+    <div class="mom-page-subtitle">View and update your personal information</div>
+  </div>
+  
+  <div class="row g-4">
+    
+    <div class="col-xl-4">
+      <div class="mom-card text-center" style="padding: 40px 20px;">
+        <div class="mb-3">
+          <div class="profile-photo-wrap">
+            @if (hasPhoto)
+            {
+              <img src="@profilePhoto" alt="Profile" />
+            }
+            else
+            {
+              <div class="profile-photo-placeholder" style="margin:0 auto;">
+                @(ViewBag.FullName?.ToString().Substring(0,1).ToUpper() ?? "U")
+              </div>
+            }
+          </div>
+        </div>
+        <h4 style="font-weight: 700; color: var(--th-text, #1e1b4b); font-family: 'Inter', sans-serif;">@(ViewBag.FullName ?? "User")</h4>
+        <p class="text-muted" style="font-size: 14px; font-weight: 500;">@(ViewBag.Job ?? "Member")</p>
+        
+        <div class="d-flex justify-content-center gap-2 mt-4">
+          <a href="#" class="btn mom-btn-ghost" style="background: rgba(99,102,241,0.1); color: #6366f1 !important; border: 1.5px solid rgba(99,102,241,0.3);"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="btn mom-btn-ghost" style="background: rgba(99,102,241,0.1); color: #6366f1 !important; border: 1.5px solid rgba(99,102,241,0.3);"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="btn mom-btn-ghost" style="background: rgba(99,102,241,0.1); color: #6366f1 !important; border: 1.5px solid rgba(99,102,241,0.3);"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="btn mom-btn-ghost" style="background: rgba(99,102,241,0.1); color: #6366f1 !important; border: 1.5px solid rgba(99,102,241,0.3);"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-xl-8">
+      <div class="mom-card">
+          
+        <div class="mom-card-header">
+          <h5>🔧 Profile Settings</h5>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show m-3" role="alert" style="border-radius:12px;">
+                <strong>Success!</strong> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="mom-card-body ps-5 pe-5">
+            
+          <ul class="nav nav-tabs mom-profile-nav mb-4">
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+            </li>
+          </ul>
+
+          <div class="tab-content pt-2">
+            
+            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+              <h6 class="mom-section">About</h6>
+              <p class="small text-muted mb-4">
+                Manage your account settings and profile information. Keep your details up to date for the best experience.
+              </p>
+
+              <h6 class="mom-section">Profile Details</h6>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 mom-label">Full Name</div>
+                <div class="col-lg-9 col-md-8" style="font-weight: 500; color: var(--th-text, #1e1b4b);">@(ViewBag.FullName ?? "User")</div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 mom-label">Company</div>
+                <div class="col-lg-9 col-md-8" style="font-weight: 500; color: var(--th-text, #1e1b4b);">@(ViewBag.Company ?? "MOM IT Solutions")</div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 mom-label">Job</div>
+                <div class="col-lg-9 col-md-8" style="font-weight: 500; color: var(--th-text, #1e1b4b);">@(ViewBag.Job ?? "Member")</div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 mom-label">Country</div>
+                <div class="col-lg-9 col-md-8" style="font-weight: 500; color: var(--th-text, #1e1b4b);">@(ViewBag.Country ?? "India")</div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 mom-label">Phone</div>
+                <div class="col-lg-9 col-md-8" style="font-weight: 500; color: var(--th-text, #1e1b4b);">@(ViewBag.Phone ?? "+91 98765 43210")</div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 mom-label">Email</div>
+                <div class="col-lg-9 col-md-8" style="font-weight: 500; color: var(--th-text, #1e1b4b);">@(ViewBag.Email ?? "user@mom.com")</div>
+              </div>
+            </div>
+            
+            <!-- EDIT PROFILE TAB -->
+            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+              <form asp-action="UpdateProfile" asp-controller="Account" method="post" enctype="multipart/form-data">
+                  
+                <!-- Profile Photo Upload -->
+                <div class="row mb-4">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Profile Image</label>
+                  <div class="col-md-8 col-lg-9">
+                    @if (hasPhoto)
+                    {
+                      <img src="@profilePhoto" alt="Profile"
+                           style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; border: 2px solid #e5e7eb;">
+                    }
+                    else
+                    {
+                      <div style="width:100px; height:100px; border-radius:12px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+                                  display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:800;
+                                  color:#fff; margin-bottom:12px;">
+                        @(ViewBag.FullName?.ToString().Substring(0,1).ToUpper() ?? "U")
+                      </div>
+                    }
+                    <div class="mb-2">
+                      <input type="file" name="ProfilePhotoFile" class="form-control mom-control"
+                             accept="image/*" style="max-width:350px;" />
+                      <small class="text-muted">Upload a photo (PNG, JPG, GIF). Max 5MB.</small>
+                    </div>
+                    @if (hasPhoto)
+                    {
+                      <div class="mt-2">
+                        <a class="btn btn-sm btn-outline-danger" style="border-radius:8px; font-weight:600;"
+                           href="javascript:void(0);" onclick="document.getElementById('removePhotoForm').submit();">
+                          <i class="bi bi-trash"></i> Remove Photo
+                        </a>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Full Name</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="fullNameInput" type="text" class="form-control mom-control" value="@ViewBag.FullName">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Company</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="companyInput" type="text" class="form-control mom-control" value="@ViewBag.Company">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Job</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="jobInput" type="text" class="form-control mom-control" value="@ViewBag.Job">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Country</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="countryInput" type="text" class="form-control mom-control" value="@ViewBag.Country">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Phone</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="phoneInput" type="text" class="form-control mom-control" value="@ViewBag.Phone">
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Email</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="emailInput" type="email" class="form-control mom-control" value="@ViewBag.Email">
+                  </div>
+                </div>
+
+                <div class="text-end pt-3">
+                  <button type="submit" class="mom-btn-save">Save Changes</button>
+                </div>
+              </form>
+
+              <!-- Hidden Remove Photo Form -->
+              <form id="removePhotoForm" asp-action="RemoveProfilePhoto" asp-controller="Account" method="post" style="display:none;"></form>
+            </div>
+
+            <!-- CHANGE PASSWORD TAB -->
+            <div class="tab-pane fade pt-3" id="profile-change-password">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Current Password</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="password" type="password" class="form-control mom-control" placeholder="••••••••">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">New Password</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="newpassword" type="password" class="form-control mom-control" placeholder="Enter new password">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-4 col-lg-3 mom-label mt-2">Confirm Password</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="renewpassword" type="password" class="form-control mom-control" placeholder="Re-enter new password">
+                  </div>
+                </div>
+
+                <div class="text-end pt-3">
+                  <button type="submit" class="mom-btn-save">Change Password</button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

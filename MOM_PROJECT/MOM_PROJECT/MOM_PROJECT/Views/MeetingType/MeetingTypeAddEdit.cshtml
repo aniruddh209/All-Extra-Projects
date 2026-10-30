@@ -1,0 +1,68 @@
+@model MOM_PROJECT.Models.MeetingTypeModel
+
+@{
+    ViewData["Title"] = Model.MeetingTypeID == 0 ? "Add Meeting Type" : "Edit Meeting Type";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="mom-page-title">
+      @(Model.MeetingTypeID == 0 ? "➕ Add Meeting Type" : "✏️ Edit Meeting Type")
+    </div>
+    <div class="mom-page-subtitle">Add or update meeting type classification</div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="mom-card" style="max-width:860px; margin:auto;">
+    <div class="mom-card-header">
+      <h5>🏷 Meeting Type Details</h5>
+    </div>
+
+    <div class="mom-card-body">
+      <form asp-controller="MeetingType" asp-action="MeetingTypeSave" method="post" novalidate>
+
+        <input type="hidden" asp-for="MeetingTypeID" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="mom-label">Meeting Type ID</label>
+            <input class="form-control mom-control" value="Auto" disabled />
+          </div>
+
+          <div class="col-md-4">
+            <label class="mom-label">Meeting Type Name <span class="text-danger">*</span></label>
+            <input asp-for="MeetingTypeName" class="form-control mom-control"
+                   placeholder="e.g. Review, Planning, Training" required />
+            <span asp-validation-for="MeetingTypeName" class="text-danger small"></span>
+          </div>
+
+          <div class="col-md-4">
+            <label class="mom-label">Remarks</label>
+            <input asp-for="Remarks" class="form-control mom-control" placeholder="Optional notes..." />
+            <span asp-validation-for="Remarks" class="text-danger small"></span>
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <a asp-controller="MeetingType" asp-action="MeetingTypeList"
+             class="btn btn-outline-secondary mom-btn-back">← Back to List</a>
+          <button type="submit" class="mom-btn-save">
+            ✔ @(Model.MeetingTypeID == 0 ? "Save Meeting Type" : "Update Meeting Type")
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>

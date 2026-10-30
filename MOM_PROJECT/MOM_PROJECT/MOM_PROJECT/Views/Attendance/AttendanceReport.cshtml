@@ -1,0 +1,161 @@
+@model IEnumerable<MOM_PROJECT.Models.AttendanceReportModel>
+@using MOM_PROJECT.Models
+
+@{
+    ViewData["Title"] = "Attendance Report";
+    Layout = "_Layout";
+
+    AttendanceSummaryModel summary =
+        ViewBag.Summary as AttendanceSummaryModel ?? new AttendanceSummaryModel();
+}
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="mom-page-title">📊 Attendance Report</div>
+    <div class="mom-page-subtitle">Generate and export meeting attendance records</div>
+  </div>
+
+  <!-- Filter Card -->
+  <div class="mom-card">
+    <div class="mom-card-header">
+      <h5>🔍 Report Filters</h5>
+    </div>
+    <div class="mom-card-body">
+      <div class="row g-3 align-items-end">
+
+        <form asp-action="AttendanceReport" method="post" class="col-md-8 row g-3">
+          <div class="col-md-6">
+            <label class="mom-label">Start Date</label>
+            <input type="date" name="startDate" value="@ViewBag.StartDate"
+                   class="form-control mom-control" />
+          </div>
+          <div class="col-md-6">
+            <label class="mom-label">End Date</label>
+            <input type="date" name="endDate" value="@ViewBag.EndDate"
+                   class="form-control mom-control" />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="mom-btn-save w-100">📋 Generate Report</button>
+          </div>
+        </form>
+
+        <form asp-action="ExportAttendance" method="post" class="col-md-4">
+          <input type="hidden" name="startDate" value="@ViewBag.StartDate" />
+          <input type="hidden" name="endDate" value="@ViewBag.EndDate" />
+          <label class="mom-label d-block mb-2">Export</label>
+          <button type="submit"
+                  style="background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:999px;color:#fff;padding:11px 24px;font-weight:700;font-size:14px;width:100%;font-family:Inter,sans-serif;cursor:pointer;">
+            📥 Export to Excel
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="mom-stat-card" style="border-left-color:#6366f1;">
+        <div class="mom-stat-value">@summary.TotalRecords</div>
+        <div class="mom-stat-label">Total Records</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="mom-stat-card" style="border-left-color:#22c55e;">
+        <div class="mom-stat-value" style="color:#16a34a;">@summary.PresentCount</div>
+        <div class="mom-stat-label">Present</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="mom-stat-card" style="border-left-color:#f59e0b;">
+        <div class="mom-stat-value" style="color:#d97706;">@summary.AttendanceRate%</div>
+        <div class="mom-stat-label">Attendance Rate</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="mom-stat-card" style="border-left-color:#3b82f6;">
+        <div class="mom-stat-value" style="color:#1d4ed8;">@summary.UniqueMeetings</div>
+        <div class="mom-stat-label">Unique Meetings</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table Card -->
+  <div class="mom-card">
+    <div class="mom-card-header">
+      <h5>📋 Attendance Data</h5>
+      <span style="background:rgba(255,255,255,0.2);border-radius:999px;padding:4px 14px;font-size:13px;font-weight:600;">
+        @(Model?.Count() ?? 0) records
+      </span>
+    </div>
+    <div class="mom-card-body" style="padding:0;">
+      <div style="overflow:hidden;">
+        <table class="mom-table" style="border-spacing:0;">
+          <thead>
+            <tr>
+              <th>Meeting Date</th>
+              <th>Meeting Type</th>
+              <th>Venue</th>
+              <th>Department</th>
+              <th>Staff</th>
+              <th>Email</th>
+              <th class="text-center">Status</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (Model != null && Model.Any())
+            {
+              foreach (var item in Model)
+              {
+                <tr>
+                  <td style="font-weight:500;white-space:nowrap;">
+                    @item.MeetingDate.ToString("dd MMM yyyy")
+                  </td>
+                  <td><span class="mom-pill-info">@item.MeetingTypeName</span></td>
+                  <td style="font-size:13px;">@item.MeetingVenueName</td>
+                  <td style="font-size:13px;">@item.DepartmentName</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="mom-avatar" style="width:28px;height:28px;font-size:11px;">
+                        @(string.IsNullOrEmpty(item.StaffName) ? "?" : item.StaffName.Substring(0,1).ToUpper())
+                      </div>
+                      <span style="font-weight:600;font-size:13px;">@item.StaffName</span>
+                    </div>
+                  </td>
+                  <td style="font-size:12px;color:#6b7280;">@item.EmailAddress</td>
+                  <td class="text-center">
+                    @if (item.IsPresent)
+                    {
+                      <span class="mom-pill-success">✓ Present</span>
+                    }
+                    else
+                    {
+                      <span class="mom-pill-danger">✗ Absent</span>
+                    }
+                  </td>
+                  <td style="font-size:13px;color:#6b7280;">
+                    @(string.IsNullOrEmpty(item.Remarks) ? "—" : item.Remarks)
+                  </td>
+                </tr>
+              }
+            }
+            else
+            {
+              <tr>
+                <td colspan="8" class="text-center text-muted py-5">
+                  <i class="bi bi-clipboard-x fs-1 d-block mb-2 opacity-25"></i>
+                  No records found for the selected date range
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

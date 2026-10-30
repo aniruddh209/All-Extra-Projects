@@ -1,0 +1,233 @@
+@model MOM_PROJECT.Models.MeetingModel
+
+@{
+    ViewData["Title"] = Model.MeetingID == 0 ? "Add Meeting" : "Edit Meeting";
+    Layout = "_Layout";
+}
+
+<style>
+/* ── Page Header ─────────────────────────────────── */
+.page-title   { font-size: 26px; font-weight: 700; color: #1e1b4b; }
+.page-subtitle{ color: #6b7280; font-size: 14px; }
+
+/* ── Card ─────────────────────────────────────────── */
+.mom-form-card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(79, 70, 229, 0.12);
+  max-width: 920px;
+  margin: auto;
+  overflow: hidden;
+}
+.mom-form-card .card-header {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 17px 26px;
+  border: none;
+}
+.mom-form-card .card-body {
+  padding: 32px;
+  background: #fff;
+}
+
+/* ── Form Controls ────────────────────────────────── */
+.form-label {
+  font-weight: 600;
+  color: #1e1b4b;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+.form-control,
+.form-select {
+  border-radius: 12px;
+  padding: 11px 14px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 0.15rem rgba(99,102,241,0.20);
+}
+.form-control:disabled,
+.form-select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+.btn-save {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  padding: 11px 28px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.btn-save:hover { opacity: 0.88; transform: translateY(-1px); color: #fff; }
+.btn-back-list {
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ── Cancel-specific fields (hidden until toggled) ── */
+.cancel-field { display: none; }
+
+/* ── Divider label ───────────────────────────────── */
+.section-divider {
+  margin: 24px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #6366f1;
+}
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <div class="page-title">
+      @(Model.MeetingID == 0 ? "➕ Add Meeting" : "✏️ Edit Meeting")
+    </div>
+    <div class="page-subtitle">Add or update meeting details below</div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="mom-form-card">
+    <div class="card-header">
+      @(Model.MeetingID == 0 ? "📋 Meeting Details" : "✏️ Meeting Details")
+    </div>
+
+    <div class="card-body">
+      <form asp-action="MeetingAddEdit" asp-controller="Meeting" method="post">
+
+        <input type="hidden" asp-for="MeetingID" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <!-- Row 1 -->
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="form-label">Meeting ID</label>
+            <input class="form-control"
+                   value="@(Model.MeetingID == 0 ? "Auto" : Model.MeetingID)"
+                   disabled />
+          </div>
+
+          <div class="col-md-8">
+            <label class="form-label">Meeting Description</label>
+            <input asp-for="MeetingDescription" class="form-control" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Meeting Date</label>
+            <input asp-for="MeetingDate" type="date" class="form-control" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Document Path</label>
+            <input asp-for="DocumentPath" class="form-control" />
+          </div>
+
+        </div>
+
+        <div class="section-divider">Classification</div>
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="mom-label">Department</label>
+            <select asp-for="DepartmentID" asp-items="Model.DepartmentList"
+                    class="form-select mom-control">
+              <option value="">-- Select Department --</option>
+            </select>
+          </div>
+          
+
+          <div class="col-md-4">
+            <label class="form-label">Meeting Type</label>
+            <select asp-for="MeetingTypeID" asp-items="Model.MeetingTypeList" class="form-select" required>
+              <option value="">-- Select Type --</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Meeting Venue</label>
+            <select asp-for="MeetingVenueID" asp-items="Model.MeetingVenueList" class="form-select" required>
+              <option value="">-- Select Venue --</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="section-divider">Cancellation</div>
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="form-label">Is Cancelled</label>
+            <select asp-for="IsCancelled" class="form-select" id="IsCancelled">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-md-4 cancel-field">
+            <label class="form-label">Cancellation Date & Time</label>
+            <input asp-for="CancellationDateTime" type="datetime-local" class="form-control" />
+          </div>
+
+          <div class="col-md-4 cancel-field">
+            <label class="form-label">Cancellation Reason</label>
+            <input asp-for="CancellationReason" class="form-control" />
+          </div>
+
+        </div>
+        
+        <div class="mt-4 text-end d-flex gap-2 justify-content-end">
+          <a asp-action="MeetingList" asp-controller="Meeting"
+             class="btn btn-outline-secondary btn-back-list">
+            ← Back to List
+          </a>
+          <button type="submit" class="btn-save">
+            ✔ @(Model.MeetingID == 0 ? "Save Meeting" : "Update Meeting")
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function toggleCancel() {
+  if ($('#IsCancelled').val() === "true")
+    $('.cancel-field').slideDown(200);
+  else
+    $('.cancel-field').slideUp(200);
+}
+toggleCancel();
+$('#IsCancelled').change(toggleCancel);
+</script>

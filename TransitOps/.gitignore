@@ -1,0 +1,67 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Production build outputs
+dist/
+dist-ssr/
+build/
+out/
+.next/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs/
+*.log
+
+# Environment variables & secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.env.local
+
+# OS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs & Editor workspaces
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swo
+*.swp
+.project
+.classpath
+.settings/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+
+# Cache directories
+.eslintcache
+.stylelintcache
+.npm/
+.yarn-cache/
+.pnpm-store/
+.parcel-cache/
+.cache/
+.rolldown/

@@ -1,0 +1,17 @@
+@* 
+  Admin login is now unified with the main Login page.
+  This view just redirects to the main login page.
+*@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="refresh" content="0; url=@Url.Action("Login", "Account")" />
+<title>Redirecting...</title>
+</head>
+<body>
+<p>Redirecting to <a href="@Url.Action("Login", "Account")">login page</a>...</p>
+</body>
+</html>

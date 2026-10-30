@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aniruddh Parmar — Full-Stack Developer, Teaching Assistant & AI/ML Engineer</title>
+  <meta name="description" content="Portfolio of Aniruddh Parmar — Full-Stack Developer building scalable products with ASP.NET Core, MERN Stack & Machine Learning. Teaching Assistant at Darshan University. Open to opportunities." />
+  <meta name="keywords" content="Aniruddh Parmar, Full Stack Developer, ASP.NET, MERN, Teaching Assistant, AI ML, Portfolio, Software Engineer" />
+  <meta name="author" content="Aniruddh Parmar" />
+  <meta property="og:title" content="Aniruddh Parmar — Full-Stack Developer & AI/ML Engineer" />
+  <meta property="og:description" content="Building scalable products with ASP.NET Core, MERN Stack & Machine Learning. Open to internships & full-time roles." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aniruddh Parmar — Full-Stack Developer" />
+  <meta name="twitter:description" content="Building scalable products with ASP.NET Core, MERN Stack & Machine Learning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══ LOADING SCREEN ═══ -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">
+        <span class="loader-bracket">&lt;</span>
+        <span class="loader-name">AP</span>
+        <span class="loader-bracket">/&gt;</span>
+      </div>
+      <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
+      <p class="loader-text">Initializing experience<span class="loader-dots">...</span></p>
+    </div>
+  </div>
+
+  <!-- ═══ CUSTOM CURSOR ═══ -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ═══ ANIMATED BG CANVAS ═══ -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ═══ MOUSE SPOTLIGHT ═══ -->
+  <div class="mouse-spotlight" id="mouseSpotlight"></div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ NAVBAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <nav class="navbar" id="navbar">
+    <a href="#home" class="nav-brand">
+      <div class="brand-icon"><i class="fas fa-code"></i></div>
+      <span class="brand-name">Aniruddh<span class="brand-dot">.dev</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#hackathons" class="nav-link">Hackathons</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="#contact" class="btn-hire magnetic-btn">Hire Me <i class="fas fa-arrow-right"></i></a>
+    <button class="hamburger" id="hamburger" aria-label="menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HERO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <div class="hero-greeting anim-hero">
+        <span class="greeting-wave">👋</span> Hello, I'm
+      </div>
+
+      <h1 class="hero-name anim-hero">
+        <span class="name-l1">ANIRUDDH</span>
+        <span class="name-l2">PARMAR</span>
+      </h1>
+
+      <div class="hero-roles anim-hero">
+        <span class="role-line"><i class="fas fa-laptop-code"></i> Full Stack Developer</span>
+        <span class="role-divider">·</span>
+        <span class="role-line"><i class="fas fa-chalkboard-teacher"></i> Teaching Assistant</span>
+        <span class="role-divider">·</span>
+        <span class="role-line"><i class="fas fa-brain"></i> AI & ML Developer</span>
+      </div>
+
+      <!-- Terminal code block -->
+      <div class="hero-terminal anim-hero">
+        <div class="terminal-bar">
+          <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+          <span class="t-title">terminal — aniruddh.dev</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">whoami</span></div>
+          <div class="t-line"><span class="t-out">aniruddh_parmar</span></div>
+          <div class="t-line" style="margin-top:6px"><span class="t-prompt">~</span> <span class="t-cmd">cat role.txt</span></div>
+          <div class="t-line"><span class="t-string" id="typewriterText">Full-Stack Developer</span><span class="t-cursor">▮</span></div>
+          <div class="t-line" style="margin-top:6px"><span class="t-prompt">~</span> <span class="t-cmd">echo $STATUS</span></div>
+          <div class="t-line"><span class="t-num">🟢</span> <span class="t-out">Open to Work</span></div>
+        </div>
+      </div>
+
+      <p class="hero-bio anim-hero">Computer Science Engineering student at Darshan University with hands-on experience in Full Stack Web Development. I build production-grade SaaS applications, AI-powered solutions, and responsive web apps using <strong>React.js</strong>, <strong>Node.js</strong>, <strong>ASP.NET Core</strong>, and <strong>MongoDB</strong>. Demonstrated ability to work in fast-paced team environments through multiple hackathons and real-world projects.</p>
+
+      <div class="hero-cta anim-hero">
+        <a href="#contact" class="btn-primary magnetic-btn"><i class="fas fa-rocket"></i> Hire Me</a>
+        <a href="Aniruddh_Professional_Resume.pdf" download="Aniruddh_Professional_Resume.pdf" class="btn-secondary magnetic-btn" id="downloadCV"><i class="fas fa-download"></i> Download Resume</a>
+        <a href="#projects" class="btn-ghost magnetic-btn"><i class="fas fa-folder-open"></i> View Projects</a>
+      </div>
+
+      <div class="hero-socials anim-hero">
+        <a href="https://github.com/aniruddh209" target="_blank" class="hero-soc" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" class="hero-soc" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://leetcode.com/u/aniruddh_a18" target="_blank" class="hero-soc" title="LeetCode"><i class="fas fa-code"></i></a>
+        <a href="#" class="hero-soc" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" class="hero-soc" title="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <!-- Right side — Profile Card -->
+    <div class="hero-right anim-hero">
+      <div class="profile-card-wrapper">
+        <div class="profile-card" id="profileCard">
+          <div class="profile-glow"></div>
+          <div class="profile-image-container">
+            <img src="profile.jpg" alt="Aniruddh Parmar" class="profile-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="profile-placeholder" style="display:none">
+              <i class="fas fa-user"></i>
+              <span>AP</span>
+            </div>
+          </div>
+          <div class="profile-info">
+            <h3>Aniruddh Parmar</h3>
+            <p>Full Stack Developer</p>
+          </div>
+          <div class="profile-badges">
+            <span class="p-badge avail"><i class="fas fa-circle"></i> Available for Internship</span>
+            <span class="p-badge"><i class="fas fa-briefcase"></i> Open to Full Time</span>
+            <span class="p-badge"><i class="fas fa-laptop"></i> Open to Freelance</span>
+          </div>
+        </div>
+        <div class="profile-orbit">
+          <div class="orbit-dot od-1"></div>
+          <div class="orbit-dot od-2"></div>
+          <div class="orbit-dot od-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━ LIVE STATS ━━━━━━━━━━━━━━ -->
+  <section class="stats-section" id="stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num" data-target="1" data-suffix="+">0</span>
+        <span class="stat-unit">Year</span>
+        <span class="stat-label">Teaching Experience</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" data-target="100" data-suffix="+">0</span>
+        <span class="stat-unit"></span>
+        <span class="stat-label">Students Mentored</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" data-target="20" data-suffix="+">0</span>
+        <span class="stat-unit"></span>
+        <span class="stat-label">Projects Built</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" data-target="5" data-suffix="+">0</span>
+        <span class="stat-unit"></span>
+        <span class="stat-label">Hackathons</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" data-target="1000" data-suffix="+">0</span>
+        <span class="stat-unit"></span>
+        <span class="stat-label">Hours of Coding</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ABOUT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="about">
+    <div class="section-label"><span>👤 PROFILE</span></div>
+    <h2 class="section-title reveal-text">About <span class="gt">Me</span></h2>
+    <div class="section-line"></div>
+    <p class="section-sub">A passionate developer & educator building beautiful digital experiences that make a difference.</p>
+
+    <div class="about-tabs">
+      <button class="tab-btn active" data-tab="profile"><i class="fas fa-user"></i> About Me</button>
+      <button class="tab-btn" data-tab="softskills"><i class="fas fa-brain"></i> Soft Skills</button>
+      <button class="tab-btn" data-tab="languages"><i class="fas fa-globe"></i> Languages</button>
+      <button class="tab-btn" data-tab="hobbies"><i class="fas fa-heart"></i> Hobbies</button>
+      <button class="tab-btn" data-tab="goals"><i class="fas fa-flag"></i> Goals</button>
+    </div>
+
+    <div class="tab-content active" id="tab-content-profile">
+      <div class="info-grid">
+        <div class="info-card glow-card"><span class="ic-label">Full Name</span><span class="ic-val">Aniruddh Parmar</span></div>
+        <div class="info-card glow-card"><span class="ic-label">Email</span><span class="ic-val" style="font-size:14px">aniruddhp16@email.com</span></div>
+        <div class="info-card glow-card"><span class="ic-label">Phone</span><span class="ic-val">+91 9313599527</span></div>
+        <div class="info-card glow-card"><span class="ic-label">University</span><span class="ic-val" style="font-size:14px">Darshan University, Rajkot</span></div>
+        <div class="info-card glow-card"><span class="ic-label">Degree</span><span class="ic-val" style="font-size:14px">B.Tech Computer Engineering</span></div>
+        <div class="info-card glow-card"><span class="ic-label">Batch</span><span class="ic-val">2024 – 2028</span></div>
+        <div class="info-card glow-card"><span class="ic-label">CGPA</span><span class="ic-val accent">8.67 / 10 ⭐</span></div>
+        <div class="info-card glow-card"><span class="ic-label">Status</span><span class="ic-val green">Open to Work 🚀</span></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-content-softskills">
+      <div class="pills-flex">
+        <div class="skill-pill"><i class="fas fa-users"></i> Leadership</div>
+        <div class="skill-pill"><i class="fas fa-lightbulb"></i> Problem Solving</div>
+        <div class="skill-pill"><i class="fas fa-comments"></i> Communication</div>
+        <div class="skill-pill"><i class="fas fa-sync"></i> Adaptability</div>
+        <div class="skill-pill"><i class="fas fa-clock"></i> Time Management</div>
+        <div class="skill-pill"><i class="fas fa-handshake"></i> Teamwork</div>
+        <div class="skill-pill"><i class="fas fa-chalkboard-teacher"></i> Teaching & Mentoring</div>
+        <div class="skill-pill"><i class="fas fa-fire"></i> Creativity</div>
+        <div class="skill-pill"><i class="fas fa-project-diagram"></i> Analytical Thinking</div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-content-languages">
+      <div class="lang-list">
+        <div><div class="lang-hdr"><span>Gujarati</span><span>Native</span></div><div class="lang-bar"><div class="lang-fill" style="--w:100%"></div></div></div>
+        <div><div class="lang-hdr"><span>Hindi</span><span>Fluent</span></div><div class="lang-bar"><div class="lang-fill" style="--w:95%"></div></div></div>
+        <div><div class="lang-hdr"><span>English</span><span>Professional</span></div><div class="lang-bar"><div class="lang-fill" style="--w:88%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-content-hobbies">
+      <div class="hobbies-grid">
+        <div class="hobby-card"><div class="hb-icon">💻</div>Coding</div>
+        <div class="hobby-card"><div class="hb-icon">📚</div>Teaching</div>
+        <div class="hobby-card"><div class="hb-icon">🎮</div>Gaming</div>
+        <div class="hobby-card"><div class="hb-icon">🤖</div>AI & ML</div>
+        <div class="hobby-card"><div class="hb-icon">☕</div>Coffee</div>
+        <div class="hobby-card"><div class="hb-icon">🎵</div>Music</div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-content-goals">
+      <div class="goals-list">
+        <div class="goal"><i class="fas fa-check-circle"></i>Become a Top Software Engineer</div>
+        <div class="goal"><i class="fas fa-check-circle"></i>Master ASP.NET Core & Cloud Architecture</div>
+        <div class="goal"><i class="fas fa-check-circle"></i>Build an AI-powered SaaS product</div>
+        <div class="goal"><i class="fas fa-check-circle"></i>Contribute to major Open Source projects</div>
+        <div class="goal"><i class="fas fa-check-circle"></i>Explore Docker, Kubernetes & DevOps deeply</div>
+      </div>
+    </div>
+
+    <!-- Journey Timeline -->
+    <div class="journey-mini" id="journeyMini">
+      <h3 class="journey-mini-title">My <span class="gt">Journey</span></h3>
+      <div class="journey-flow">
+        <div class="jf-item"><div class="jf-dot"></div><span>Started B.Tech</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item"><div class="jf-dot"></div><span>Web Development</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item"><div class="jf-dot"></div><span>React & Node.js</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item"><div class="jf-dot"></div><span>Teaching Assistant</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item"><div class="jf-dot"></div><span>ASP.NET Core</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item"><div class="jf-dot"></div><span>Machine Learning</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item"><div class="jf-dot"></div><span>AI & Hackathons</span></div>
+        <div class="jf-line"></div>
+        <div class="jf-item active"><div class="jf-dot pulse"></div><span>Building Products</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ EXPERIENCE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="experience">
+    <div class="section-label"><span>💼 EXPERIENCE</span></div>
+    <h2 class="section-title reveal-text">Work <span class="gt">Experience</span></h2>
+    <div class="section-line"></div>
+    <p class="section-sub">Professional experience that shaped my skills and leadership abilities.</p>
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div class="exp-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="exp-meta">
+          <h3>Teaching Assistant</h3>
+          <p class="exp-company"><i class="fas fa-university"></i> Darshan University — Dept. of Computer Engineering</p>
+          <p class="exp-period"><i class="fas fa-calendar"></i> Nov 2025 – Mar 2026 · <span class="exp-duration">5 Months</span></p>
+        </div>
+        <div class="exp-status">
+          <span class="status-badge active-badge"><i class="fas fa-circle"></i> Current Role</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <p class="exp-desc">Assisted students in learning JavaScript and web development. Conducted practical coding sessions and provided hands-on guidance to Computer Engineering students, strengthening their foundational programming skills.</p>
+        <div class="exp-highlights">
+          <div class="exp-hl"><i class="fas fa-check"></i> Assisted students in learning JavaScript & web development</div>
+          <div class="exp-hl"><i class="fas fa-check"></i> Conducted practical coding sessions with hands-on guidance</div>
+          <div class="exp-hl"><i class="fas fa-check"></i> Conduct practical lab sessions & assessments</div>
+          <div class="exp-hl"><i class="fas fa-check"></i> Debug student code & provide one-on-one mentoring</div>
+          <div class="exp-hl"><i class="fas fa-check"></i> Strengthened core OOP & DBMS concepts</div>
+          <div class="exp-hl"><i class="fas fa-check"></i> Improved batch programming proficiency</div>
+        </div>
+        <div class="exp-skills">
+          <span>JavaScript</span><span>Java</span><span>C/C++</span><span>OOP</span><span>Leadership</span><span>Communication</span><span>Problem Solving</span><span>Mentoring</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ SKILLS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="skills">
+    <div class="section-label"><span>⚡ ARSENAL</span></div>
+    <h2 class="section-title reveal-text">Technical <span class="gt">Arsenal</span></h2>
+    <div class="section-line"></div>
+    <p class="section-sub">Technologies and tools I use to bring ideas to life.</p>
+
+    <div class="skills-cloud">
+      <!-- Frontend -->
+      <div class="skill-group reveal">
+        <div class="sg-header"><div class="sg-icon"><i class="fas fa-palette"></i></div><h3>Frontend</h3></div>
+        <div class="sg-tags">
+          <span class="skill-tag" data-tip="React.js"><i class="fab fa-react"></i> React</span>
+          <span class="skill-tag" data-tip="HTML5"><i class="fab fa-html5"></i> HTML5</span>
+          <span class="skill-tag" data-tip="CSS3"><i class="fab fa-css3-alt"></i> CSS3</span>
+          <span class="skill-tag" data-tip="JavaScript"><i class="fab fa-js-square"></i> JavaScript</span>
+          <span class="skill-tag" data-tip="TypeScript">TS TypeScript</span>
+          <span class="skill-tag" data-tip="Bootstrap"><i class="fab fa-bootstrap"></i> Bootstrap</span>
+          <span class="skill-tag" data-tip="Tailwind CSS">🎨 Tailwind</span>
+          <span class="skill-tag" data-tip="Next.js">▲ Next.js</span>
+        </div>
+      </div>
+      <!-- Backend -->
+      <div class="skill-group reveal">
+        <div class="sg-header"><div class="sg-icon"><i class="fas fa-server"></i></div><h3>Backend</h3></div>
+        <div class="sg-tags">
+          <span class="skill-tag" data-tip="Node.js"><i class="fab fa-node-js"></i> Node.js</span>
+          <span class="skill-tag" data-tip="Express.js">⚡ Express.js</span>
+          <span class="skill-tag" data-tip="ASP.NET MVC">🔷 ASP.NET MVC</span>
+          <span class="skill-tag" data-tip="ASP.NET Core">🔷 ASP.NET Core</span>
+          <span class="skill-tag" data-tip="ASP.NET Web API">🔷 Web API</span>
+          <span class="skill-tag" data-tip="REST API">🔗 REST API</span>
+          <span class="skill-tag" data-tip="JWT Auth">🔐 JWT</span>
+          <span class="skill-tag" data-tip="Socket.io">📡 Socket.io</span>
+        </div>
+      </div>
+      <!-- Database -->
+      <div class="skill-group reveal">
+        <div class="sg-header"><div class="sg-icon"><i class="fas fa-database"></i></div><h3>Database</h3></div>
+        <div class="sg-tags">
+          <span class="skill-tag" data-tip="MongoDB">🍃 MongoDB</span>
+          <span class="skill-tag" data-tip="SQL Server">🗄️ SQL Server</span>
+          <span class="skill-tag" data-tip="Firebase">🔥 Firebase</span>
+          <span class="skill-tag" data-tip="Redis">⚡ Redis</span>
+          <span class="skill-tag" data-tip="Entity Framework">🔷 Entity Framework</span>
+        </div>
+      </div>
+      <!-- AI & ML -->
+      <div class="skill-group reveal">
+        <div class="sg-header"><div class="sg-icon"><i class="fas fa-robot"></i></div><h3>AI & Machine Learning</h3></div>
+        <div class="sg-tags">
+          <span class="skill-tag" data-tip="Python"><i class="fab fa-python"></i> Python</span>
+          <span class="skill-tag" data-tip="NumPy">🔢 NumPy</span>
+          <span class="skill-tag" data-tip="Pandas">🐼 Pandas</span>
+          <span class="skill-tag" data-tip="Scikit-Learn">🧪 Scikit-Learn</span>
+          <span class="skill-tag" data-tip="XGBoost">🚀 XGBoost</span>
+          <span class="skill-tag" data-tip="Deep Learning">🧠 Deep Learning</span>
+          <span class="skill-tag" data-tip="Google Earth Engine">🌍 Google Earth Engine</span>
+          <span class="skill-tag" data-tip="Data Analysis">📊 Data Analysis</span>
+        </div>
+      </div>
+      <!-- Programming Languages -->
+      <div class="skill-group reveal">
+        <div class="sg-header"><div class="sg-icon"><i class="fas fa-code"></i></div><h3>Programming Languages</h3></div>
+        <div class="sg-tags">
+          <span class="skill-tag" data-tip="Java"><i class="fab fa-java"></i> Java</span>
+          <span class="skill-tag" data-tip="Python"><i class="fab fa-python"></i> Python</span>
+          <span class="skill-tag" data-tip="JavaScript"><i class="fab fa-js-square"></i> JavaScript</span>
+          <span class="skill-tag" data-tip="C">🔵 C</span>
+          <span class="skill-tag" data-tip="C++">🔵 C++</span>
+          <span class="skill-tag" data-tip="C#">🔷 C#</span>
+          <span class="skill-tag" data-tip="SQL">🗃️ SQL</span>
+        </div>
+      </div>
+      <!-- Tools -->
+      <div class="skill-group reveal">
+        <div class="sg-header"><div class="sg-icon"><i class="fas fa-tools"></i></div><h3>Tools & DevOps</h3></div>
+        <div class="sg-tags">
+          <span class="skill-tag" data-tip="Git"><i class="fab fa-git-alt"></i> Git</span>
+          <span class="skill-tag" data-tip="GitHub"><i class="fab fa-github"></i> GitHub</span>
+          <span class="skill-tag" data-tip="Postman">📬 Postman</span>
+          <span class="skill-tag" data-tip="Docker"><i class="fab fa-docker"></i> Docker</span>
+          <span class="skill-tag" data-tip="Visual Studio">🔷 Visual Studio</span>
+          <span class="skill-tag" data-tip="VS Code">💙 VS Code</span>
+          <span class="skill-tag" data-tip="Linux"><i class="fab fa-linux"></i> Linux</span>
+          <span class="skill-tag" data-tip="Vercel">▲ Vercel</span>
+          <span class="skill-tag" data-tip="Render">🚀 Render</span>
+          <span class="skill-tag" data-tip="Figma"><i class="fab fa-figma"></i> Figma</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ PROJECTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="projects">
+    <div class="section-label"><span>🚀 PORTFOLIO</span></div>
+    <h2 class="section-title reveal-text">Featured <span class="gt">Projects</span></h2>
+    <div class="section-line"></div>
+    <p class="section-sub">Real-world products built with passion, shipped with precision, and designed to scale.</p>
+
+    <div class="projects-showcase">
+
+      <!-- Project 1: ISRO (Featured / Expanded) -->
+      <div class="proj-card proj-featured reveal" id="projISRO">
+        <div class="proj-img" style="background:linear-gradient(135deg,#1e40af,#7c3aed,#06b6d4)">
+          <i class="fas fa-satellite"></i>
+          <div class="proj-badge">🏆 Flagship Project</div>
+        </div>
+        <div class="proj-body">
+          <h3>ISRO Smart AI Heat Mitigation</h3>
+          <p class="proj-subtitle">AI-powered satellite data analysis for urban heat island prediction and mitigation — built for the ISRO Hackathon</p>
+          <p>Developed a comprehensive system leveraging satellite imagery from Google Earth Engine and Landsat data to create heat maps and predict urban heat islands. Implemented XGBoost-based machine learning models for temperature prediction with high accuracy. The system processes geospatial data through a complete pipeline: data collection → preprocessing → feature engineering → model training → prediction → visualization.</p>
+          <div class="proj-highlights">
+            <div class="ph"><i class="fas fa-satellite-dish"></i> Satellite Data Processing</div>
+            <div class="ph"><i class="fas fa-map"></i> Google Earth Engine Integration</div>
+            <div class="ph"><i class="fas fa-brain"></i> XGBoost ML Prediction</div>
+            <div class="ph"><i class="fas fa-chart-line"></i> Heat Map Visualization</div>
+            <div class="ph"><i class="fas fa-globe"></i> Real-World Impact</div>
+            <div class="ph"><i class="fas fa-database"></i> Landsat Data Pipeline</div>
+          </div>
+          <div class="proj-tech">
+            <span>Python</span><span>XGBoost</span><span>Google Earth Engine</span><span>Landsat</span><span>Pandas</span><span>NumPy</span><span>Scikit-Learn</span><span>Data Visualization</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> View Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: A18 GPT -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6)">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="proj-body">
+          <h3>A18 GPT — AI Chat Platform</h3>
+          <p>Full-stack AI-powered conversational platform with real-time chat capabilities, user authentication, persistent conversation history, and a beautiful dark-themed UI. Built as a production-ready alternative to existing AI chat interfaces.</p>
+          <div class="proj-tech">
+            <span>React</span><span>Node.js</span><span>Express</span><span>MongoDB</span><span>JWT Auth</span><span>Dark Theme</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3: Field Service ERP -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#059669,#0d9488)">
+          <i class="fas fa-building"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Field Service Management ERP</h3>
+          <p>Enterprise-grade resource planning system with role-based access control for Customers, Workers, and Managers. Features real-time scheduling, service tracking dashboards, and comprehensive authentication. Designed for scalable field operations.</p>
+          <div class="proj-tech">
+            <span>ASP.NET Core Web API</span><span>React</span><span>Role-Based Auth</span><span>Real-Time Dashboard</span><span>SQL Server</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4: Minutes of Meeting -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4)">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Minutes of Meeting System</h3>
+          <p>Comprehensive meeting management platform with automated report generation, task assignment and tracking, attendance management, and role-based authentication via Entity Framework Core. Streamlines organizational meeting workflows.</p>
+          <div class="proj-tech">
+            <span>ASP.NET Core MVC</span><span>SQL Server</span><span>Entity Framework</span><span>C#</span><span>Authentication</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5: Interview Prep Platform -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">
+          <i class="fas fa-video"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Interview Preparation Platform</h3>
+          <p>Interactive platform featuring real-time video calling for mock interviews, dedicated interview rooms, structured practice sessions, and comprehensive authentication. Helps candidates prepare for technical interviews effectively.</p>
+          <div class="proj-tech">
+            <span>WebRTC</span><span>Video Calling</span><span>Authentication</span><span>Interview Rooms</span><span>Real-Time</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 6: Chess.js Web Application -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#1e293b,#334155)">
+          <i class="fas fa-chess-knight"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Chess.js Web Application</h3>
+          <p>Interactive chess platform built with React.js and Chess.js. Features complete game state management, move validation, responsive board UI, and an engaging playing experience for chess enthusiasts.</p>
+          <div class="proj-tech">
+            <span>React.js</span><span>Chess.js</span><span>Game State</span><span>Move Validation</span><span>Responsive UI</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+            <a href="https://chess-project-0o2o.onrender.com/" target="_blank" class="pl-btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 7: PetPooja AI Copilot -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#dc2626,#f97316)">
+          <i class="fas fa-utensils"></i>
+        </div>
+        <div class="proj-body">
+          <h3>PetPooja AI Copilot</h3>
+          <p class="proj-subtitle">Built for Nirma University Hackathon — Advanced to Second Round</p>
+          <p>SaaS-based Restaurant Management Platform with AI-powered features. Led frontend development and UI design, built responsive dashboards and management workflows. Advanced to the second round during hackathon evaluation.</p>
+          <div class="proj-tech">
+            <span>React</span><span>Node.js</span><span>MongoDB</span><span>AI-Powered</span><span>SaaS Platform</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+            <a href="https://restaurant-ai-copilot.vercel.app/login" target="_blank" class="pl-btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 8: Stock Market Prediction -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#16a34a,#0d9488)">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Stock Market Prediction</h3>
+          <p>Machine learning-powered stock price prediction system with advanced feature engineering, comprehensive data visualization, and regression-based forecasting. Processes historical market data to generate actionable price predictions.</p>
+          <div class="proj-tech">
+            <span>Python</span><span>Machine Learning</span><span>Feature Engineering</span><span>Visualization</span><span>Regression</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 9: RAWG Games Explorer -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">
+          <i class="fas fa-gamepad"></i>
+        </div>
+        <div class="proj-body">
+          <h3>RAWG Games Explorer</h3>
+          <p>Dynamic game discovery platform built with React.js and RAWG API. Features API fetching, React Router DOM routing, reusable components, and dynamic pages for exploring and browsing video games.</p>
+          <div class="proj-tech">
+            <span>React.js</span><span>React Router</span><span>RAWG API</span><span>REST API</span><span>Dynamic Pages</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 10: AI Website Builder (Ongoing) -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#0ea5e9,#8b5cf6)">
+          <i class="fas fa-magic"></i>
+        </div>
+        <div class="proj-body">
+          <h3>AI Website Builder</h3>
+          <p class="proj-subtitle">🔨 Currently in Development</p>
+          <p>Building an AI-powered website generator using the full MERN Stack. Leverages AI to automatically generate responsive, production-ready websites from simple text prompts and descriptions.</p>
+          <div class="proj-tech">
+            <span>React.js</span><span>Node.js</span><span>Express</span><span>MongoDB</span><span>AI Generation</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 11: Uber Clone (Ongoing) -->
+      <div class="proj-card reveal">
+        <div class="proj-img" style="background:linear-gradient(135deg,#000000,#1e293b)">
+          <i class="fas fa-car"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Uber Clone</h3>
+          <p class="proj-subtitle">🔨 Currently in Development</p>
+          <p>Developing a full-featured ride-booking platform with modern full-stack architecture. Implements real-time tracking, user authentication, ride matching, and payment integration for a complete transportation experience.</p>
+          <div class="proj-tech">
+            <span>MERN Stack</span><span>Real-Time</span><span>Maps API</span><span>Authentication</span><span>Full Stack</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/aniruddh209" target="_blank" class="pl-btn"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HACKATHONS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="hackathons">
+    <div class="section-label"><span>🏆 COMPETITIONS</span></div>
+    <h2 class="section-title reveal-text">Hackathon <span class="gt">Journey</span></h2>
+    <div class="section-line"></div>
+    <p class="section-sub">Building under pressure, learning at speed, and competing with the best.</p>
+
+    <div class="hack-timeline">
+      <div class="hack-card reveal">
+        <div class="hack-icon" style="background:linear-gradient(135deg,#1e40af,#3b82f6)"><i class="fas fa-satellite"></i></div>
+        <div class="hack-content">
+          <h3>ISRO Hackathon</h3>
+          <p>Built Smart AI Heat Mitigation system using satellite data, Google Earth Engine, and XGBoost ML. Processed Landsat imagery for urban heat island prediction.</p>
+          <div class="hack-tags"><span>AI/ML</span><span>Geospatial</span><span>Python</span></div>
+        </div>
+      </div>
+      <div class="hack-card reveal">
+        <div class="hack-icon" style="background:linear-gradient(135deg,#dc2626,#f97316)"><i class="fas fa-utensils"></i></div>
+        <div class="hack-content">
+          <h3>Nirma University Hackathon</h3>
+          <p class="hack-achievement">🏅 Advanced to Second Round</p>
+          <p>Developed PetPooja AI Copilot — a SaaS-based Restaurant Management Platform with AI-powered features. Led frontend development and UI design.</p>
+          <div class="hack-tags"><span>React</span><span>Node.js</span><span>AI</span><span>SaaS</span></div>
+        </div>
+      </div>
+      <div class="hack-card reveal">
+        <div class="hack-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="fas fa-code"></i></div>
+        <div class="hack-content">
+          <h3>ODDO Hackathon</h3>
+          <p>Participated in the ODDO hackathon, building business automation solutions and exploring enterprise application development patterns.</p>
+          <div class="hack-tags"><span>ERP</span><span>Python</span><span>Business</span></div>
+        </div>
+      </div>
+      <div class="hack-card reveal">
+        <div class="hack-icon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="fas fa-skull-crossbones"></i></div>
+        <div class="hack-content">
+          <h3>404: Survivors Not Found</h3>
+          <p class="hack-achievement">🏅 Advanced to Round 2 among 50+ teams</p>
+          <p>Competed in this intense coding challenge, solving complex algorithmic problems under extreme time constraints. Advanced to Round 2 among 50+ competing teams.</p>
+          <div class="hack-tags"><span>Algorithms</span><span>Problem Solving</span><span>Top Performer</span></div>
+        </div>
+      </div>
+      <div class="hack-card reveal">
+        <div class="hack-icon" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4)"><i class="fas fa-gem"></i></div>
+        <div class="hack-content">
+          <h3>HackaMineD</h3>
+          <p>Participated in HackaMineD hackathon, collaborating with teammates to build innovative solutions and push creative boundaries in software development.</p>
+          <div class="hack-tags"><span>Innovation</span><span>Teamwork</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ACHIEVEMENTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="achievements">
+    <div class="section-label"><span>🎯 MILESTONES</span></div>
+    <h2 class="section-title reveal-text">Key <span class="gt">Achievements</span></h2>
+    <div class="section-line"></div>
+
+    <div class="achieve-grid">
+      <div class="achieve-card reveal">
+        <div class="achieve-icon"><i class="fas fa-users"></i></div>
+        <span class="achieve-num" data-target="100" data-suffix="+">0</span>
+        <span class="achieve-label">Students Mentored</span>
+      </div>
+      <div class="achieve-card reveal">
+        <div class="achieve-icon"><i class="fas fa-project-diagram"></i></div>
+        <span class="achieve-num" data-target="20" data-suffix="+">0</span>
+        <span class="achieve-label">Projects Built</span>
+      </div>
+      <div class="achieve-card reveal">
+        <div class="achieve-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <span class="achieve-num" data-target="1" data-suffix="">0</span>
+        <span class="achieve-label">Year as Teaching Assistant</span>
+      </div>
+      <div class="achieve-card reveal">
+        <div class="achieve-icon"><i class="fas fa-trophy"></i></div>
+        <span class="achieve-num" data-target="5" data-suffix="">0</span>
+        <span class="achieve-label">Hackathons Competed</span>
+      </div>
+      <div class="achieve-card reveal">
+        <div class="achieve-icon"><i class="fas fa-brain"></i></div>
+        <span class="achieve-num" data-target="3" data-suffix="">0</span>
+        <span class="achieve-label">AI/ML Projects</span>
+      </div>
+      <div class="achieve-card reveal">
+        <div class="achieve-icon"><i class="fas fa-building"></i></div>
+        <span class="achieve-num" data-target="2" data-suffix="">0</span>
+        <span class="achieve-label">Enterprise ERP Systems</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ GITHUB ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="github">
+    <div class="section-label"><span>📊 OPEN SOURCE</span></div>
+    <h2 class="section-title reveal-text">GitHub <span class="gt">Activity</span></h2>
+    <div class="section-line"></div>
+
+    <div class="github-wrap reveal">
+      <div class="stats-panel-grid">
+        
+        <!-- GitHub Stats Card -->
+        <div class="stats-panel-card">
+          <div class="spc-header">
+            <i class="fab fa-github"></i>
+            <h3>GitHub Overview</h3>
+          </div>
+          <div class="spc-stats">
+            <div class="spc-stat-item">
+              <span class="spc-num">22</span>
+              <span class="spc-label">Public Repositories</span>
+            </div>
+            <div class="spc-stat-item">
+              <span class="spc-num">1,280+</span>
+              <span class="spc-label">Total Contributions</span>
+            </div>
+            <div class="spc-stat-item">
+              <span class="spc-num">34+</span>
+              <span class="spc-label">GitHub Stars</span>
+            </div>
+            <div class="spc-stat-item">
+              <span class="spc-num">15+</span>
+              <span class="spc-label">Followers</span>
+            </div>
+          </div>
+          <div class="spc-langs">
+            <h4>Top Tech Stack</h4>
+            <div class="spc-lang-bar-container">
+              <div class="spc-lang-bar" style="width: 45%; background: var(--cyan);" title="JavaScript: 45%"></div>
+              <div class="spc-lang-bar" style="width: 25%; background: var(--mint);" title="React.js: 25%"></div>
+              <div class="spc-lang-bar" style="width: 15%; background: var(--teal);" title="C#: 15%"></div>
+              <div class="spc-lang-bar" style="width: 15%; background: var(--violet);" title="Others: 15%"></div>
+            </div>
+            <div class="spc-lang-legend">
+              <span><span class="dot" style="background: var(--cyan);"></span> JS (45%)</span>
+              <span><span class="dot" style="background: var(--mint);"></span> React (25%)</span>
+              <span><span class="dot" style="background: var(--teal);"></span> C# (15%)</span>
+              <span><span class="dot" style="background: var(--violet);"></span> Others (15%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LeetCode Stats Card -->
+        <div class="stats-panel-card">
+          <div class="spc-header">
+            <i class="fas fa-code"></i>
+            <h3>LeetCode Arsenal</h3>
+          </div>
+          <div class="spc-stats">
+            <div class="spc-stat-item">
+              <span class="spc-num">185+</span>
+              <span class="spc-label">Problems Solved</span>
+            </div>
+            <div class="spc-stat-item">
+              <span class="spc-num">Top 15%</span>
+              <span class="spc-label">Global Ranking</span>
+            </div>
+            <div class="spc-stat-item">
+              <span class="spc-num">1,480</span>
+              <span class="spc-label">Contest Rating</span>
+            </div>
+            <div class="spc-stat-item">
+              <span class="spc-num">150+</span>
+              <span class="spc-label">Coding Streak</span>
+            </div>
+          </div>
+          <div class="spc-lc-bars">
+            <div class="lc-bar-wrapper">
+              <span class="lc-bar-label">Easy <strong>110 / 800</strong></span>
+              <div class="lc-bar-track"><div class="lc-bar-fill easy" style="width: 65%;"></div></div>
+            </div>
+            <div class="lc-bar-wrapper">
+              <span class="lc-bar-label">Medium <strong>68 / 1600</strong></span>
+              <div class="lc-bar-track"><div class="lc-bar-fill medium" style="width: 40%;"></div></div>
+            </div>
+            <div class="lc-bar-wrapper">
+              <span class="lc-bar-label">Hard <strong>7 / 700</strong></span>
+              <div class="lc-bar-track"><div class="lc-bar-fill hard" style="width: 15%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="gh-links-row">
+        <a href="https://github.com/aniruddh209" target="_blank" class="btn-primary magnetic-btn"><i class="fab fa-github"></i> GitHub Profile</a>
+        <a href="https://leetcode.com/u/aniruddh_a18" target="_blank" class="btn-ghost magnetic-btn"><i class="fas fa-code"></i> LeetCode Profile</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ SOCIAL ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="socials">
+    <div class="section-label"><span>🌐 CONNECT</span></div>
+    <h2 class="section-title reveal-text">Let's <span class="gt">Connect</span></h2>
+    <div class="section-line"></div>
+
+    <div class="social-grid">
+      <a href="https://github.com/aniruddh209" target="_blank" class="social-card reveal" style="--sc-color:#fff">
+        <i class="fab fa-github"></i><span>GitHub</span><small>@aniruddh209</small>
+      </a>
+      <a href="#" class="social-card reveal" style="--sc-color:#0a66c2">
+        <i class="fab fa-linkedin-in"></i><span>LinkedIn</span><small>Connect</small>
+      </a>
+      <a href="https://leetcode.com/u/aniruddh_a18" target="_blank" class="social-card reveal" style="--sc-color:#f59e0b">
+        <i class="fas fa-code"></i><span>LeetCode</span><small>@aniruddh_a18</small>
+      </a>
+      <a href="#" class="social-card reveal" style="--sc-color:#e1306c">
+        <i class="fab fa-instagram"></i><span>Instagram</span><small>Follow</small>
+      </a>
+      <a href="#" class="social-card reveal" style="--sc-color:#1877f2">
+        <i class="fab fa-facebook"></i><span>Facebook</span><small>Profile</small>
+      </a>
+      <a href="#" class="social-card reveal" style="--sc-color:#fff">
+        <i class="fab fa-x-twitter"></i><span>Twitter / X</span><small>Follow</small>
+      </a>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ LOCATION ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="location">
+    <div class="section-label"><span>📍 LOCATION</span></div>
+    <h2 class="section-title reveal-text">Based in <span class="gt">India</span></h2>
+    <div class="section-line"></div>
+
+    <div class="location-card reveal">
+      <div class="loc-map">
+        <div class="loc-grid-bg"></div>
+        <div class="loc-marker">
+          <div class="loc-pulse"></div>
+          <div class="loc-pin"><i class="fas fa-map-marker-alt"></i></div>
+        </div>
+        <div class="loc-label">Rajkot, Gujarat</div>
+      </div>
+      <div class="loc-info">
+        <h3><i class="fas fa-map-marker-alt"></i> Rajkot, Gujarat, India</h3>
+        <p>Based in the vibrant city of Rajkot, studying at Darshan University. Open to remote opportunities and willing to relocate for the right role.</p>
+        <div class="loc-badges">
+          <span class="loc-badge"><i class="fas fa-check-circle"></i> Available for Internship</span>
+          <span class="loc-badge"><i class="fas fa-check-circle"></i> Open to Relocation</span>
+          <span class="loc-badge"><i class="fas fa-check-circle"></i> Remote Friendly</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CONTACT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="section" id="contact">
+    <div class="section-label"><span>📬 GET IN TOUCH</span></div>
+    <h2 class="section-title reveal-text">Contact <span class="gt">Me</span></h2>
+    <div class="section-line"></div>
+    <p class="section-sub">Have a project idea, job opportunity, or just want to say hi? Let's talk!</p>
+
+    <div class="contact-wrap">
+      <div class="contact-left reveal">
+        <form id="contactForm" class="cform glass-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-row">
+            <div class="fg"><label for="nameInput">Full Name *</label><input type="text" id="nameInput" name="name" placeholder="John Doe" required /></div>
+            <div class="fg"><label for="emailInput">Email Address *</label><input type="email" id="emailInput" name="email" placeholder="john@company.com" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label for="companyInput">Company</label><input type="text" id="companyInput" name="company" placeholder="Google, Microsoft..." /></div>
+            <div class="fg"><label for="roleInput">Role / Position</label><input type="text" id="roleInput" name="role" placeholder="HR Manager, CTO..." /></div>
+          </div>
+          <div class="fg"><label for="budgetInput">Budget Range</label>
+            <select id="budgetInput" name="budget">
+              <option value="">Select budget (optional)</option>
+              <option value="intern">Internship</option>
+              <option value="<5k">Less than $5,000</option>
+              <option value="5k-15k">$5,000 — $15,000</option>
+              <option value="15k-50k">$15,000 — $50,000</option>
+              <option value="50k+">$50,000+</option>
+              <option value="fulltime">Full-Time Position</option>
+            </select>
+          </div>
+          <div class="fg"><label for="messageInput">Message *</label><textarea id="messageInput" name="message" rows="5" placeholder="Tell me about your project, opportunity, or idea..." required></textarea></div>
+          <button type="submit" class="btn-primary btn-full magnetic-btn" id="contactSubmitBtn"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+
+      <div class="contact-right reveal">
+        <div class="avail-card">
+          <div class="avail-dot"></div>
+          <div><h4>Open for Opportunities</h4><p>Available for internships, full-time roles & freelance work</p></div>
+        </div>
+
+        <div class="cdetails">
+          <div class="cdi">
+            <div class="cdi-icon"><i class="fas fa-envelope"></i></div>
+            <div><span class="cdi-label">Email</span><span class="cdi-val">aniruddhp16@email.com</span></div>
+          </div>
+          <div class="cdi">
+            <div class="cdi-icon"><i class="fas fa-phone"></i></div>
+            <div><span class="cdi-label">Phone</span><span class="cdi-val">+91 9313599527</span></div>
+          </div>
+          <div class="cdi">
+            <div class="cdi-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div><span class="cdi-label">Location</span><span class="cdi-val">Rajkot, Gujarat, India</span></div>
+          </div>
+          <div class="cdi">
+            <div class="cdi-icon"><i class="fas fa-university"></i></div>
+            <div><span class="cdi-label">University</span><span class="cdi-val">Darshan University</span></div>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <h4>Connect Online</h4>
+          <div class="socials">
+            <a href="https://github.com/aniruddh209" target="_blank" class="soc github" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="soc linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="soc twitter" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" class="soc instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FOOTER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="brand-icon"><i class="fas fa-code"></i></div>
+        <span class="brand-name">Aniruddh<span class="brand-dot">.dev</span></span>
+      </div>
+      <div class="footer-roles">
+        <span>Full Stack Developer</span>
+        <span class="footer-sep">·</span>
+        <span>Teaching Assistant</span>
+        <span class="footer-sep">·</span>
+        <span>AI & ML Developer</span>
+      </div>
+      <p class="f-tagline">Designed & Developed by <strong>Aniruddh Parmar</strong></p>
+      <p class="f-copy">© 2026 Aniruddh Parmar · Built with ❤️ and lots of ☕</p>
+      <div class="footer-links">
+        <a href="https://github.com/aniruddh209" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

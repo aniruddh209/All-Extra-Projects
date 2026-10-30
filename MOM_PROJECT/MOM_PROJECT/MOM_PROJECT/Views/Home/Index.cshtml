@@ -1,0 +1,519 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+}
+
+<style>
+/* Dashboard Container & Typography */
+.dashboard-container {
+    padding: 2rem 1.5rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.dashboard-title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    background: linear-gradient(135deg, #111827, #4f46e5, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+}
+
+body[data-theme="dark"] .dashboard-title {
+    background: linear-gradient(135deg, #f8fafc, #818cf8, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dashboard-subtitle {
+    color: #64748b;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+/* Welcome Alert (Glassmorphism concept) */
+.welcome-alert {
+    background: rgba(220, 252, 231, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-left: 6px solid #10b981;
+    padding: 18px 24px;
+    border-radius: 16px;
+    color: #065f46;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
+    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-bottom: 2rem;
+}
+
+body[data-theme="dark"] .welcome-alert {
+    background: rgba(6, 78, 59, 0.3);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-left: 6px solid #34d399;
+    color: #a7f3d0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+@@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header Buttons */
+.btn-modern {
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-modern-outline {
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    color: #475569;
+}
+
+.btn-modern-outline:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    background: #e0e7ff;
+    transform: translateY(-2px);
+}
+
+body[data-theme="dark"] .btn-modern-outline {
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+body[data-theme="dark"] .btn-modern-outline:hover {
+    border-color: #818cf8;
+    color: #818cf8;
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.btn-modern-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-modern-primary:hover {
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Stat Cards */
+.stat-card {
+    border-radius: 20px;
+    padding: 26px;
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body[data-theme="dark"] .stat-card {
+    background: #1e293b;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.12);
+}
+
+body[data-theme="dark"] .stat-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+body[data-theme="dark"] .stat-card::after {
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+}
+
+.card-purple { background: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+.card-blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.card-orange { background: linear-gradient(135deg, #fffbeb, #fef3c7); }
+.card-green { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+
+body[data-theme="dark"] .card-purple { background: linear-gradient(135deg, #2e1065, #4c1d95); }
+body[data-theme="dark"] .card-blue { background: linear-gradient(135deg, #1e3a8a, #1d4ed8); }
+body[data-theme="dark"] .card-orange { background: linear-gradient(135deg, #78350f, #92400e); }
+body[data-theme="dark"] .card-green { background: linear-gradient(135deg, #064e3b, #047857); }
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.icon-purple { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+.icon-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.icon-orange { background: linear-gradient(135deg, #f59e0b, #ea580c); }
+.icon-green { background: linear-gradient(135deg, #10b981, #059669); }
+
+.stat-badge {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.badge-purple-light { background: #e0e7ff; color: #4338ca; }
+.badge-blue-light { background: #dbeafe; color: #1e40af; }
+.badge-orange-light { background: #ffedd5; color: #c2410c; }
+.badge-green-light { background: #d1fae5; color: #047857; }
+
+body[data-theme="dark"] .badge-purple-light { background: rgba(224, 231, 255, 0.2); color: #c7d2fe; }
+body[data-theme="dark"] .badge-blue-light { background: rgba(219, 234, 254, 0.2); color: #bfdbfe; }
+body[data-theme="dark"] .badge-orange-light { background: rgba(255, 237, 213, 0.2); color: #fed7aa; }
+body[data-theme="dark"] .badge-green-light { background: rgba(209, 250, 229, 0.2); color: #a7f3d0; }
+
+.stat-number { 
+    font-size: 36px; 
+    font-weight: 800; 
+    color: #111827; 
+    line-height: 1.1; 
+    margin-bottom: 4px;
+}
+
+body[data-theme="dark"] .stat-number { color: #f9fafb; }
+
+.stat-label { 
+    font-size: 14px; 
+    color: #64748b; 
+    font-weight: 600; 
+}
+
+body[data-theme="dark"] .stat-label { color: #94a3b8; }
+
+/* Charts */
+.chart-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+    padding: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+body[data-theme="dark"] .chart-card {
+    background: #1e293b;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chart-card:hover {
+    box-shadow: 0 15px 50px rgba(99, 102, 241, 0.08);
+}
+
+body[data-theme="dark"] .chart-card:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.chart-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #1e293b;
+}
+
+body[data-theme="dark"] .chart-title { color: #f1f5f9; }
+
+.chart-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.chart-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.chart-action-btn:hover {
+    background: #e2e8f0;
+    color: #4f46e5;
+}
+
+body[data-theme="dark"] .chart-action-btn {
+    background: #334155;
+    color: #94a3b8;
+}
+
+body[data-theme="dark"] .chart-action-btn:hover {
+    background: #475569;
+    color: #818cf8;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+</style>
+
+<div class="dashboard-container">
+
+    <!-- ✅ WELCOME -->
+    <div class="welcome-alert">
+        <div>
+            <i class="bi bi-stars me-2"></i> Welcome back,
+            <strong>@User.Identity?.Name</strong>! Here's what's happening today.
+        </div>
+        <i class="bi bi-x" style="cursor: pointer; font-size: 20px;"></i>
+    </div>
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-end mb-4 gap-3 flex-wrap">
+        <div>
+            <div class="dashboard-title">Overview</div>
+            <div class="dashboard-subtitle">
+                Real-time meeting analytics and operational insights
+            </div>
+        </div>
+
+        <div class="d-flex gap-3">
+            <button class="btn-modern btn-modern-outline" onclick="window.location.reload()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh Data
+            </button>
+            <a asp-action="ExportDashboardReport" asp-controller="Home" class="btn-modern btn-modern-primary" style="text-decoration:none;">
+                <i class="bi bi-download"></i> Export Report
+            </a>
+        </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card card-purple">
+                <div class="stat-header">
+                    <div class="stat-icon icon-purple">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <span class="stat-badge badge-purple-light">All Time</span>
+                </div>
+                <div class="stat-number">@ViewBag.TotalMeetings</div>
+                <div class="stat-label">Total Scheduled Meetings</div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card card-blue">
+                <div class="stat-header">
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-check2-circle"></i>
+                    </div>
+                    <span class="stat-badge badge-blue-light">Active</span>
+                </div>
+                <div class="stat-number">@ViewBag.CompletedMeetings</div>
+                <div class="stat-label">Completed / Upcoming</div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card card-orange">
+                <div class="stat-header">
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-x-octagon"></i>
+                    </div>
+                    <span class="stat-badge badge-orange-light">Recorded</span>
+                </div>
+                <div class="stat-number">@ViewBag.CancelledMeetings</div>
+                <div class="stat-label">Cancelled Meetings</div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card card-green">
+                <div class="stat-header">
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <span class="stat-badge badge-green-light">Records</span>
+                </div>
+                <div class="stat-number">@ViewBag.TotalMembers</div>
+                <div class="stat-label">Total Attendees Logged</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Meeting Distribution</div>
+                    <div class="chart-actions">
+                        <button class="chart-action-btn" title="Refresh"><i class="bi bi-arrow-clockwise"></i></button>
+                    </div>
+                </div>
+                <div class="chart-wrapper d-flex justify-content-center">
+                    <canvas id="meetingTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Department Involvement</div>
+                    <div class="chart-actions">
+                        <button class="chart-action-btn" title="Refresh"><i class="bi bi-arrow-clockwise"></i></button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Force charts to maintain aspect ratio and fit container
+Chart.defaults.maintainAspectRatio = false;
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = "#64748b";
+
+/* Donut Chart */
+new Chart(document.getElementById('meetingTypeChart'), {
+    type: 'doughnut',
+    data: {
+        labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.TypeLabels)),
+        datasets: [{
+            data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.TypeData)),
+            backgroundColor: [
+                '#6366f1', '#10b981', '#f59e0b', '#3b82f6', 
+                '#8b5cf6', '#ec4899', '#14b8a6', '#f43f5e'
+            ],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        plugins: { 
+            legend: { 
+                position: 'bottom',
+                labels: {
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                }
+            } 
+        },
+        cutout: '70%',
+        layout: {
+            padding: 10
+        }
+    }
+});
+
+/* Bar Chart */
+let isDarkTheme = document.body.getAttribute('data-theme') === 'dark';
+let gridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+
+new Chart(document.getElementById('departmentChart'), {
+    type: 'bar',
+    data: {
+        labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.DeptLabels)),
+        datasets: [{
+            label: 'Meetings Held',
+            data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.DeptData)),
+            backgroundColor: 'rgba(99, 102, 241, 0.85)',
+            hoverBackgroundColor: 'rgba(79, 70, 229, 1)',
+            borderRadius: 8,
+            borderSkipped: false,
+            barThickness: 32
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: { 
+            y: { 
+                beginAtZero: true,
+                grid: {
+                    color: gridColor,
+                    drawBorder: false
+                },
+                border: { display: false }
+            },
+            x: {
+                grid: {
+                    display: false,
+                    drawBorder: false
+                },
+                border: { display: false }
+            }
+        }
+    }
+});
+</script>

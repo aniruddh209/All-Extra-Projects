@@ -1,0 +1,251 @@
+@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Minutes of Meeting</title>
+
+  <link href="~/assets/img/favicon.png" rel="icon">
+  <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700" rel="stylesheet">
+
+  <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <link href="~/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+@{
+    string currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+    <a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center">
+      <img src="~/assets/img/logo.png" alt="">
+      <span class="d-none d-lg-block">Minutes of Meetings</span>
+    </a>
+    <i class="bi bi-list toggle-sidebar-btn"></i>
+  </div>
+
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+
+      <!-- 🌙 Theme Toggle -->
+      <li class="nav-item me-2">
+        <button id="themeToggleBtn" title="Toggle dark / light theme" onclick="toggleTheme()">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-bell"></i>
+          <span class="badge bg-primary badge-number">4</span>
+        </a>
+      </li>
+
+      <!-- ✅ FIXED PROFILE DROPDOWN -->
+      <li class="nav-item dropdown pe-3">
+        <a class="nav-link nav-profile d-flex align-items-center pe-0"
+           href="#"
+           data-bs-toggle="dropdown">
+          @{
+            string headerPhoto = Context.Session.GetString("ProfilePhoto") ?? "";
+            string headerInitial = (Context.Session.GetString("UserName") ?? "U").Substring(0,1).ToUpper();
+          }
+          @if (!string.IsNullOrEmpty(headerPhoto))
+          {
+            <img src="@headerPhoto" alt="Profile" class="rounded-circle" style="width:36px;height:36px;object-fit:cover;">
+          }
+          else
+          {
+            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                 style="width:36px;height:36px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:700;font-size:14px;">
+              @headerInitial
+            </div>
+          }
+          <span class="d-none d-md-block dropdown-toggle ps-2">
+            @(Context.Session.GetString("UserName") ?? "User")
+          </span>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+          <li class="dropdown-header">
+            <h6>@(Context.Session.GetString("UserName") ?? "User")</h6>
+            <span>@(Context.Session.GetString("UserRole") ?? "Member")</span>
+          </li>
+
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center"
+               asp-controller="Account"
+               asp-action="Profile">
+              <i class="bi bi-person"></i>
+              <span>My Profile</span>
+            </a>
+          </li>
+
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center"
+               asp-controller="Account"
+               asp-action="Logout">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+  </nav>
+
+</header>
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "Home" ? "active" : "collapsed")"
+         asp-controller="Home" asp-action="Index">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-heading">Department</li>
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "Department" ? "active" : "collapsed")"
+         asp-controller="Department" asp-action="DepartmentList">
+        <i class="bi bi-building"></i>
+        <span>Department</span>
+      </a>
+    </li>
+
+    <li class="nav-heading">Staff</li>
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "Staff" ? "active" : "collapsed")"
+         asp-controller="Staff" asp-action="StaffList">
+        <i class="bi bi-people"></i>
+        <span>Staff</span>
+      </a>
+    </li>
+
+    <li class="nav-heading">Meetings Details</li>
+
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "MeetingType" ? "active" : "collapsed")"
+         asp-controller="MeetingType" asp-action="MeetingTypeList">
+        <i class="bi bi-tags"></i>
+        <span>Meeting Type</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "MeetingVenue" ? "active" : "collapsed")"
+         asp-controller="MeetingVenue" asp-action="MeetingVenueList">
+        <i class="bi bi-geo-alt"></i>
+        <span>Meeting Venue</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "Meeting" ? "active" : "collapsed")"
+         asp-controller="Meeting" asp-action="MeetingList">
+        <i class="bi bi-calendar-event"></i>
+        <span>Meeting</span>
+      </a>
+    </li>
+
+    @* <li class="nav-item"> *@
+    @*   <a class="nav-link @(currentController == "MeetingMember" ? "active" : "collapsed")" *@
+    @*      asp-controller="MeetingMember" asp-action="MeetingMemberList"> *@
+    @*     <i class="bi bi-person-check"></i> *@
+    @*     <span>MeetingMember</span> *@
+    @*   </a> *@
+    @* </li> *@
+
+    <!-- ATTENDANCE -->
+    <li class="nav-heading">Reports</li>
+    <li class="nav-item">
+      <a class="nav-link @(currentController == "Attendance" ? "active" : "collapsed")"
+         asp-controller="Attendance"
+         asp-action="AttendanceReport">
+        <i class="bi bi-clipboard-check"></i>
+        <span>Attendance</span>
+      </a>
+    </li>
+
+  </ul>
+
+</aside>
+
+<!-- ======= Main ======= -->
+<main id="main" class="main">
+  @RenderBody()
+</main>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <div class="container text-center">
+    © 2025 <strong>MOM System</strong> | Designed by <strong>Aniruddh Parmar</strong>
+  </div>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+  <i class="bi bi-arrow-up-short"></i>
+</a>
+
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/js/main.js"></script>
+
+<script>
+/* ── Theme Toggle (persisted via localStorage) ── */
+(function () {
+  var saved = localStorage.getItem('momTheme') || 'light';
+  if (saved === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    var icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = '☀️';
+  }
+})();
+
+function toggleTheme() {
+  var isDark = document.body.getAttribute('data-theme') === 'dark';
+  var icon   = document.getElementById('themeIcon');
+  if (isDark) {
+    document.body.removeAttribute('data-theme');
+    localStorage.setItem('momTheme', 'light');
+    if (icon) icon.textContent = '🌙';
+  } else {
+    document.body.setAttribute('data-theme', 'dark');
+    localStorage.setItem('momTheme', 'dark');
+    if (icon) icon.textContent = '☀️';
+  }
+}
+</script>
+
+</body>
+</html>
